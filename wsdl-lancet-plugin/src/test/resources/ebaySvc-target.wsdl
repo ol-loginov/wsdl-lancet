@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:definitions targetNamespace="urn:ebay:apis:eBLBaseComponents" xmlns:w="http://schemas.xmlsoap.org/wsdl/" xmlns:ns="urn:ebay:apis:eBLBaseComponents" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:ns9="wsdlsoap" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns13="xml" xmlns:ns10="wsdl" xmlns:ns11="ns" xmlns:ns8="xs" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/">
+</w:definitions>

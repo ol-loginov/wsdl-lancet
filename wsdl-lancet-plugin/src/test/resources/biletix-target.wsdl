@@ -1,0 +1,2271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions targetNamespace="http://www.tais.ru/"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+    xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+    xmlns:tns="http://www.tais.ru/"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <wsdl:types>
+        <xs:schema elementFormDefault="qualified" targetNamespace="http://www.tais.ru/">
+            <xs:complexType name="ArrayOf_soapenc_string">
+                <xs:complexContent>
+                    <xs:restriction base="soapenc:Array">
+                        <xs:attribute ref="soapenc:arrayType" wsdl:arrayType="soapenc:string[]"/>
+                    </xs:restriction>
+                </xs:complexContent>
+            </xs:complexType>
+            <xs:complexType name="CIBESOAPError">
+                <xs:sequence>
+                    <xs:element name="code" type="xs:string"/>
+                    <xs:element name="description" type="xs:string"/>
+                    <xs:element minOccurs="0" name="data" type="soapenc:Struct"/>
+                    <xs:element minOccurs="0" name="stack" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="CommonParameters">
+                <xs:sequence>
+                    <xs:element name="session_token" type="xs:string"/>
+                    <xs:element name="hash" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="PaymentDataRecord">
+                <xs:sequence>
+                    <xs:element name="payed" type="xs:string"/>
+                    <xs:element minOccurs="0" name="ps_status" type="xs:string"/>
+                    <xs:element name="ps_status_code" type="xs:string"/>
+                    <xs:element name="ps_status_description" type="xs:string"/>
+                    <xs:element name="ps_status_message" type="xs:string"/>
+                    <xs:element name="ps_sum" type="xs:string"/>
+                    <xs:element name="ps_currency" type="xs:string"/>
+                    <xs:element name="ps_response_date" type="xs:string"/>
+                    <xs:element name="ps_billnumber" type="xs:string"/>
+                    <xs:element name="payment_code_hash" type="xs:string"/>
+                    <xs:element name="ps_cardtype" type="xs:string"/>
+                    <xs:element name="ps_cardcode" type="xs:string"/>
+                    <xs:element name="ps_card_expiration_year" type="xs:string"/>
+                    <xs:element name="ps_card_expiration_month" type="xs:string"/>
+                    <xs:element name="ps_payer" type="xs:string"/>
+                    <xs:element name="ps_card_owner" type="xs:string"/>
+                    <xs:element name="ps_reversal_before" type="xs:string"/>
+                    <xs:element name="paysystem2pc" type="xs:string"/>
+                    <xs:element name="ps_data" type="xs:string"/>
+                    <xs:element name="ps_polling_data" type="xs:string"/>
+                    <xs:element name="ps_autch_code" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="CancelInput">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="tns:CommonParameters">
+                            <xs:sequence>
+                                <xs:element minOccurs="0"
+                                    name="order_id" type="xs:string"/>
+                                <xs:element minOccurs="0" name="rloc" type="xs:string"/>
+                            </xs:sequence>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="CancelOutput">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="error" type="tns:CIBESOAPError"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="VoidInput">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="tns:CommonParameters">
+                            <xs:sequence>
+                                <xs:element minOccurs="0"
+                                    name="order_id" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="voluntary" type="xs:string"/>
+                            </xs:sequence>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="VoidOutput">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="error" type="tns:CIBESOAPError"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="LoadPNRInput">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="tns:CommonParameters">
+                            <xs:sequence>
+                                <xs:element name="rloc" type="xs:string"/>
+                                <xs:element name="create_payed" type="xs:string"/>
+                            </xs:sequence>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="CalculatePricingInput">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="tns:CommonParameters">
+                            <xs:sequence>
+                                <xs:element name="login" type="xs:string"/>
+                                <xs:element name="site" type="xs:string"/>
+                                <xs:element name="enable_log" type="xs:string"/>
+                                <xs:element name="first_departure_date" type="xs:string"/>
+                                <xs:element name="last_departure_date" type="xs:string"/>
+                                <xs:element name="departure_point" type="xs:string"/>
+                                <xs:element name="arrival_point" type="xs:string"/>
+                                <xs:element name="class" type="xs:string"/>
+                                <xs:element name="passcat" type="xs:string"/>
+                                <xs:element name="interface" type="xs:string"/>
+                                <xs:element name="values" type="xs:string"/>
+                                <xs:element name="currency" type="xs:string"/>
+                                <xs:element name="vak" type="xs:string"/>
+                                <xs:element name="ak" type="xs:string"/>
+                                <xs:element name="oak" type="xs:string"/>
+                                <xs:element name="segment_count" type="xs:string"/>
+                                <xs:element name="fare_code" type="xs:string"/>
+                                <xs:element name="rbd" type="xs:string"/>
+                                <xs:element name="owrt" type="xs:string"/>
+                            </xs:sequence>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="RevalidateAsyncInput">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="tns:CommonParameters">
+                            <xs:sequence>
+                                <xs:element name="order_id" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="pnr_state_hash" type="xs:string"/>
+                            </xs:sequence>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="RevalidateAsyncOutput">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="error" type="tns:CIBESOAPError"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="UpdatePaymentDataInput">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="tns:CommonParameters">
+                            <xs:sequence>
+                                <xs:element name="order_id" type="xs:string"/>
+                                <xs:element name="payment_data" type="tns:PaymentDataRecord"/>
+                            </xs:sequence>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="UpdatePaymentDataOutput">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="error" type="tns:CIBESOAPError"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GetPaymentParamsInput">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="tns:CommonParameters">
+                            <xs:sequence>
+                                <xs:element name="order_id" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="do_init_payment" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="is_secure_call" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="additional_data" type="xs:string"/>
+                            </xs:sequence>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GetPaymentParamsOutput">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="error" type="tns:CIBESOAPError"/>
+                        <xs:element name="input_params" type="xs:string"/>
+                        <xs:element name="correspondence" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="LogEventInput">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="tns:CommonParameters">
+                            <xs:sequence>
+                                <xs:element name="event_id" type="xs:string"/>
+                                <xs:element name="order_id" type="xs:string"/>
+                                <xs:element name="message" type="xs:string"/>
+                            </xs:sequence>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="LogEventOutput">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="error" type="tns:CIBESOAPError"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="AddPNRCommentInput">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="tns:CommonParameters">
+                            <xs:sequence>
+                                <xs:element minOccurs="0"
+                                    name="order_id" type="xs:string"/>
+                                <xs:element minOccurs="0" name="comment" type="xs:string"/>
+                                <xs:element name="rloc" type="xs:string"/>
+                                <xs:element name="oths" type="xs:string"/>
+                            </xs:sequence>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="AddPNRCommentOutput">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="error" type="tns:CIBESOAPError"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:complexType name="AirStop">
+                <xs:sequence>
+                    <xs:element name="city_code" type="xs:string"/>
+                    <xs:element name="city_full_name" type="xs:string"/>
+                    <xs:element name="airport_code" type="xs:string"/>
+                    <xs:element minOccurs="0" name="airport_full_name" type="xs:string"/>
+                    <xs:element minOccurs="0" name="duration" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ArrayOfAirStop">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0"
+                        name="AirStop" nillable="true" type="tns:AirStop"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="AirSegment">
+                <xs:sequence>
+                    <xs:element name="ak" type="xs:string"/>
+                    <xs:element minOccurs="0" name="ak_full_name" type="xs:string"/>
+                    <xs:element minOccurs="0" name="oak" type="xs:string"/>
+                    <xs:element minOccurs="0" name="oak_full_name" type="xs:string"/>
+                    <xs:element name="flight_number" type="xs:string"/>
+                    <xs:element minOccurs="0" name="plane_type" type="xs:string"/>
+                    <xs:element minOccurs="0" name="plane_type_name" type="xs:string"/>
+                    <xs:element minOccurs="0" name="departure_city_code" type="xs:string"/>
+                    <xs:element minOccurs="0" name="arrival_city_code" type="xs:string"/>
+                    <xs:element minOccurs="0"
+                        name="departure_city_full_name" type="xs:string"/>
+                    <xs:element minOccurs="0"
+                        name="arrival_city_full_name" type="xs:string"/>
+                    <xs:element minOccurs="0"
+                        name="departure_airport_full_name" type="xs:string"/>
+                    <xs:element minOccurs="0"
+                        name="arrival_airport_full_name" type="xs:string"/>
+                    <xs:element name="departure_time" type="xs:string"/>
+                    <xs:element name="arrival_time" type="xs:string"/>
+                    <xs:element name="departure_airport_code" type="xs:string"/>
+                    <xs:element name="arrival_airport_code" type="xs:string"/>
+                    <xs:element name="departure_date" type="xs:string"/>
+                    <xs:element name="arrival_date" type="xs:string"/>
+                    <xs:element name="arrival_utc" type="xs:string"/>
+                    <xs:element name="departure_utc" type="xs:string"/>
+                    <xs:element name="duration" type="xs:string"/>
+                    <xs:element name="class" type="xs:string"/>
+                    <xs:element name="rbd" type="xs:string"/>
+                    <xs:element name="layover_time" type="xs:string"/>
+                    <xs:element name="direction" type="xs:string"/>
+                    <xs:element name="stops" type="tns:ArrayOfAirStop"/>
+                    <xs:element minOccurs="0" name="bagtype" type="xs:string"/>
+                    <xs:element minOccurs="0" name="bagallowance" type="xs:string"/>
+                    <xs:element minOccurs="0" name="fare_codes" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ArrayOfAirSegment">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0"
+                        name="AirSegment" nillable="true" type="tns:AirSegment"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ProductFare">
+                <xs:sequence>
+                    <xs:element name="marketing_fare_code" type="xs:string"/>
+                    <xs:element name="fare_code" type="xs:string"/>
+                    <xs:element name="fare_rules_key" type="xs:string"/>
+                    <xs:element name="fare_description" type="xs:string"/>
+                    <xs:element name="fare_description2" type="xs:string"/>
+                    <xs:element name="fare_data" type="xs:string"/>
+                    <xs:element name="refund_before" type="xs:string"/>
+                    <xs:element name="refund_after" type="xs:string"/>
+                    <xs:element name="exchange_before" type="xs:string"/>
+                    <xs:element name="exchange_after" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="SmallProductFare">
+                <xs:sequence>
+                    <xs:element name="marketing_fare_code" type="xs:string"/>
+                    <xs:element name="fare_code" type="xs:string"/>
+                    <xs:element name="fare_description" type="xs:string"/>
+                    <xs:element name="fare_description2" type="xs:string"/>
+                    <xs:element name="fare_data" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ArrayOfProductFare">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0"
+                        name="ProductFare" nillable="true" type="tns:ProductFare"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ArrayOfSmallProductFare">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0"
+                        name="SmallProductFare" nillable="true" type="tns:SmallProductFare"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="Product">
+                <xs:sequence>
+                    <xs:element name="passcat" type="xs:string"/>
+                    <xs:element name="price" type="xs:string"/>
+                    <xs:element name="fare" type="xs:string"/>
+                    <xs:element name="taxes" type="xs:string"/>
+                    <xs:element name="count" type="xs:string"/>
+                    <xs:element name="sum_price" type="xs:string"/>
+                    <xs:element name="fares" type="tns:ArrayOfProductFare"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="SmallProduct">
+                <xs:sequence>
+                    <xs:element name="passcat" type="xs:string"/>
+                    <xs:element name="fares" type="tns:ArrayOfSmallProductFare"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ArrayOfProduct">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0"
+                        name="Product" nillable="true" type="tns:Product"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ArrayOfSmallProduct">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0"
+                        name="SmallProduct" nillable="true" type="tns:SmallProduct"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="Passenger">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="id" type="xs:string"/>
+                    <xs:element name="gender" type="xs:string"/>
+                    <xs:element name="last_name" type="xs:string"/>
+                    <xs:element name="first_name" type="xs:string"/>
+                    <xs:element minOccurs="0" name="second_name" type="xs:string"/>
+                    <xs:element name="birthday" type="xs:string"/>
+                    <xs:element name="doctype" type="xs:string"/>
+                    <xs:element minOccurs="0" name="doccountry" type="xs:string"/>
+                    <xs:element minOccurs="0" name="docnumber" type="xs:string"/>
+                    <xs:element minOccurs="0" name="docexpiration" type="xs:string"/>
+                    <xs:element minOccurs="0" name="ff_cardnumber" type="xs:string"/>
+                    <xs:element minOccurs="0" name="ff_ak" type="xs:string"/>
+                    <xs:element minOccurs="0" name="price" type="xs:string"/>
+                    <xs:element minOccurs="0" name="fare" type="xs:string"/>
+                    <xs:element minOccurs="0" name="taxes" type="xs:string"/>
+                    <xs:element minOccurs="0" name="count" type="xs:string"/>
+                    <xs:element minOccurs="0" name="sum_price" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ArrayOfPassengers">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0"
+                        name="passenger" nillable="true" type="tns:Passenger"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ServiceApplicabilitySegment">
+                <xs:sequence>
+                    <xs:element name="id" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ArrayOfServiceApplicabilitySegments">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0"
+                        name="ServiceApplicabilitySegment"
+                        nillable="true" type="tns:ServiceApplicabilitySegment"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ServiceApplicabilityPassenger">
+                <xs:sequence>
+                    <xs:element name="id" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ArrayOfServiceApplicabilityPassengers">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0"
+                        name="ServiceApplicabilityPassenger"
+                        nillable="true" type="tns:ServiceApplicabilityPassenger"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="UpdateOrderPassenger">
+                <xs:sequence>
+                    <xs:element name="id" type="xs:string"/>
+                    <xs:element name="doctype" type="xs:string"/>
+                    <xs:element minOccurs="0" name="doccountry" type="xs:string"/>
+                    <xs:element minOccurs="0" name="docnumber" type="xs:string"/>
+                    <xs:element minOccurs="0" name="docexpiration" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ArrayOfUpdateOrderPassengers">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0"
+                        name="UpdateOrderPassenger" nillable="true" type="tns:UpdateOrderPassenger"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ServiceApplicability">
+                <xs:sequence>
+                    <xs:element name="passengers" type="tns:ArrayOfServiceApplicabilityPassengers"/>
+                    <xs:element name="segments" type="tns:ArrayOfServiceApplicabilitySegments"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="Service">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="provider" type="xs:string"/>
+                    <xs:element minOccurs="0" name="type" type="xs:string"/>
+                    <xs:element minOccurs="0" name="type2" type="xs:string"/>
+                    <xs:element name="id" type="xs:string"/>
+                    <xs:element minOccurs="0" name="description" type="xs:string"/>
+                    <xs:element minOccurs="0" name="price" type="xs:string"/>
+                    <xs:element minOccurs="0" name="max_count" type="xs:string"/>
+                    <xs:element minOccurs="0" name="count" type="xs:string"/>
+                    <xs:element minOccurs="0" name="freetext" type="xs:string"/>
+                    <xs:element minOccurs="0" name="passenger_id" type="xs:string"/>
+                    <xs:element minOccurs="0" name="segment_id" type="xs:string"/>
+                    <xs:element minOccurs="0" name="applicability" type="tns:ServiceApplicability"/>
+                    <xs:element minOccurs="0" name="ext_id" type="xs:string"/>
+                    <xs:element minOccurs="0" name="link" type="xs:string"/>
+                    <xs:element minOccurs="0" name="pdf_link" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ArrayOfServices">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0"
+                        name="service" nillable="true" type="tns:Service"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="StartSessionInput">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="login" type="xs:string"/>
+                        <xs:element name="password" type="xs:string"/>
+                        <xs:element name="hash" type="xs:string"/>
+                        <xs:element minOccurs="0" name="disable_hash" type="xs:string"/>
+                        <xs:element minOccurs="0" name="additional_data" type="xs:string"/>
+                        <xs:element minOccurs="0" name="currency" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="StartSessionOutput">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="error" type="tns:CIBESOAPError"/>
+                        <xs:element name="session_token" type="xs:string"/>
+                        <xs:element minOccurs="0" name="additional_data" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="EndSessionInput">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="tns:CommonParameters"/>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="EndSessionOutput"/>
+            <xs:complexType name="GetOptimalFaresRoute">
+                <xs:sequence>
+                    <xs:element name="departure_point" type="xs:string"/>
+                    <xs:element name="arrival_point" type="xs:string"/>
+                    <xs:element name="outbound_date" type="xs:string"/>
+                    <xs:element minOccurs="0" name="outbound_time_range" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ArrayOfGetOptimalFaresRoute">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0"
+                        name="GetOptimalFaresRoute" nillable="true" type="tns:GetOptimalFaresRoute"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="CommonSearchParameters">
+                <xs:complexContent>
+                    <xs:extension base="tns:CommonParameters">
+                        <xs:sequence>
+                            <xs:element name="owrt" type="xs:string"/>
+                            <xs:element minOccurs="0" name="routes" type="tns:ArrayOfGetOptimalFaresRoute"/>
+                            <xs:element minOccurs="0"
+                                name="departure_point" type="xs:string"/>
+                            <xs:element minOccurs="0"
+                                name="arrival_point" type="xs:string"/>
+                            <xs:element minOccurs="0"
+                                name="outbound_date" type="xs:string"/>
+                            <xs:element minOccurs="0"
+                                name="outbound_time_range" type="xs:string"/>
+                            <xs:element minOccurs="0" name="return_date" type="xs:string"/>
+                            <xs:element minOccurs="0"
+                                name="return_time_range" type="xs:string"/>
+                            <xs:element name="adult_count" type="xs:string"/>
+                            <xs:element minOccurs="0" name="child_count" type="xs:string"/>
+                            <xs:element minOccurs="0"
+                                name="infant_count" type="xs:string"/>
+                            <xs:element minOccurs="0" name="class" type="xs:string"/>
+                            <xs:element minOccurs="0" name="direct_only" type="xs:string"/>
+                            <xs:element minOccurs="0" name="promocode" type="xs:string"/>
+                            <xs:element minOccurs="0"
+                                name="return_full_names" type="xs:string"/>
+                        </xs:sequence>
+                    </xs:extension>
+                </xs:complexContent>
+            </xs:complexType>
+            <xs:element name="GetOptimalFaresInput">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="tns:CommonSearchParameters">
+                            <xs:sequence>
+                                <xs:element minOccurs="0"
+                                    name="date_range" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="price_range" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="cache_usage" type="xs:string"/>
+                            </xs:sequence>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GetOrderServicesInput">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="tns:CommonParameters">
+                            <xs:sequence>
+                                <xs:element name="order_id" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="freetext" type="xs:string"/>
+                            </xs:sequence>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GetOrderServicesOutput">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="error" type="tns:CIBESOAPError"/>
+                        <xs:element name="currency" type="xs:string"/>
+                        <xs:element name="segments" type="tns:ArrayOfAirSegment"/>
+                        <xs:element minOccurs="0" name="passengers" type="tns:ArrayOfPassengers"/>
+                        <xs:element name="services" type="tns:ArrayOfServices"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GetMinFaresInput">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="tns:CommonParameters">
+                            <xs:sequence>
+                                <xs:element name="departure_point" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="arrival_points" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="arrival_countries" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="max_points" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="group_by" type="xs:string"/>
+                                <xs:element minOccurs="0" name="owrt" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="min_stay" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="max_stay" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="date_start" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="date_end" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="return_full_names" type="xs:string"/>
+                            </xs:sequence>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:complexType name="GetOptimalFaresLinkedFlightID">
+                <xs:sequence>
+                    <xs:element name="fare_id" type="xs:string"/>
+                    <xs:element name="flight_id" type="xs:string"/>
+                    <xs:element name="total_price" type="xs:string"/>
+                    <xs:element name="products" type="tns:ArrayOfSmallProduct"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ArrayOfGetOptimalFaresLinkedFlightID">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0"
+                        name="GetOptimalFaresLinkedFlightID"
+                        nillable="true" type="tns:GetOptimalFaresLinkedFlightID"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="GetOptimalFaresFlight">
+                <xs:sequence>
+                    <xs:element name="duration" type="xs:string"/>
+                    <xs:element name="offer_id" type="xs:string"/>
+                    <xs:element name="seat_count" type="xs:string"/>
+                    <xs:element name="stops" type="xs:string"/>
+                    <xs:element name="link" type="xs:string"/>
+                    <xs:element minOccurs="0" name="flight_id"
+                        nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="linked_flight_ids"
+                        nillable="true" type="tns:ArrayOfGetOptimalFaresLinkedFlightID"/>
+                    <xs:element name="segments" type="tns:ArrayOfAirSegment"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ArrayOfGetOptimalFaresFlight">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0"
+                        name="GetOptimalFaresFlight" nillable="true" type="tns:GetOptimalFaresFlight"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="GetOptimalFaresLinkedFareID">
+                <xs:sequence>
+                    <xs:element name="fare_id" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ArrayOfGetOptimalFaresLinkedFareID">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0"
+                        name="GetOptimalFaresLinkedFareID"
+                        nillable="true" type="tns:GetOptimalFaresLinkedFareID"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="GetOptimalFaresDirection">
+                <xs:sequence>
+                    <xs:element name="direction" type="xs:string"/>
+                    <xs:element name="date" type="xs:string"/>
+                    <xs:element name="flights" type="tns:ArrayOfGetOptimalFaresFlight"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ArrayOfGetOptimalFaresDirection">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0"
+                        name="GetOptimalFaresDirection" nillable="true" type="tns:GetOptimalFaresDirection"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="GetOptimalFaresOffer">
+                <xs:sequence>
+                    <xs:element name="ak" type="xs:string"/>
+                    <xs:element name="charter" type="xs:string"/>
+                    <xs:element name="block" type="xs:string"/>
+                    <xs:element name="transit_visa_required" type="xs:string"/>
+                    <xs:element name="products" type="tns:ArrayOfProduct"/>
+                    <xs:element name="total_price" type="xs:string"/>
+                    <xs:element name="penalty" type="xs:string"/>
+                    <xs:element name="multipnr" type="xs:string"/>
+                    <xs:element name="timelimit" type="xs:string"/>
+                    <xs:element name="link" type="xs:string"/>
+                    <xs:element minOccurs="0" name="fare_id"
+                        nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="linked_fare_ids"
+                        nillable="true" type="tns:ArrayOfGetOptimalFaresLinkedFareID"/>
+                    <xs:element name="directions" type="tns:ArrayOfGetOptimalFaresDirection"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ArrayOfGetOptimalFaresOffer">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0"
+                        name="GetOptimalFaresOffer" nillable="true" type="tns:GetOptimalFaresOffer"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="GetOptimalFaresOutput">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="error" type="tns:CIBESOAPError"/>
+                        <xs:element name="currency" type="xs:string"/>
+                        <xs:element name="offers" type="tns:ArrayOfGetOptimalFaresOffer"/>
+                        <xs:element name="affiliate_link" type="xs:string"/>
+                        <xs:element name="shallow_link" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GetAvailabilityInput">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="tns:CommonSearchParameters">
+                            <xs:sequence>
+                                <xs:element minOccurs="0"
+                                    name="date_range" type="xs:string"/>
+                            </xs:sequence>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:complexType name="GetAvailabilityOutputFare">
+                <xs:sequence>
+                    <xs:element name="marketing_fare_code" type="xs:string"/>
+                    <xs:element name="fare_code" type="xs:string"/>
+                    <xs:element name="fare_rules_key" type="xs:string"/>
+                    <xs:element name="fare" type="xs:string"/>
+                    <xs:element name="offer_id" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ArrayOfGetAvailabilityOutputFare">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0"
+                        name="GetAvailabilityOutputFare" nillable="true" type="tns:GetAvailabilityOutputFare"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="GetAvailabilityOutputFlight">
+                <xs:sequence>
+                    <xs:element name="duration" type="xs:string"/>
+                    <xs:element name="seat_count" type="xs:string"/>
+                    <xs:element name="segments" type="tns:ArrayOfAirSegment"/>
+                    <xs:element name="fares" type="tns:ArrayOfGetAvailabilityOutputFare"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ArrayOfGetAvailabilityOutputFlight">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0"
+                        name="GetAvailabilityOutputFlight"
+                        nillable="true" type="tns:GetAvailabilityOutputFlight"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="GetAvailabilityOutputDate">
+                <xs:sequence>
+                    <xs:element name="date" type="xs:string"/>
+                    <xs:element name="flights" type="tns:ArrayOfGetAvailabilityOutputFlight"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ArrayOfGetAvailabilityOutputDate">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0"
+                        name="GetAvailabilityOutputDate" nillable="true" type="tns:GetAvailabilityOutputDate"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="GetAvailabilityOutput">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="error" type="tns:CIBESOAPError"/>
+                        <xs:element name="outbound_dates" type="tns:ArrayOfGetAvailabilityOutputDate"/>
+                        <xs:element name="return_dates" type="tns:ArrayOfGetAvailabilityOutputDate"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:complexType name="OutboundOfferID">
+                <xs:sequence>
+                    <xs:element name="id" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ArrayOfOutboundOfferID">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0"
+                        name="OutboundOfferID" nillable="true" type="tns:OutboundOfferID"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="SelectOfferInput">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="tns:CommonParameters">
+                            <xs:sequence>
+                                <xs:element minOccurs="0"
+                                    name="outbound_offer_id" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="return_offer_id" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="outbound_offer_ids" type="tns:ArrayOfOutboundOfferID"/>
+                                <xs:element minOccurs="0"
+                                    name="show_services" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="freetext" type="xs:string"/>
+                            </xs:sequence>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SelectOfferOutput">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="error" type="tns:CIBESOAPError"/>
+                        <xs:element name="currency" type="xs:string"/>
+                        <xs:element name="transit_visa_required" type="xs:string"/>
+                        <xs:element name="outbound_duration" type="xs:string"/>
+                        <xs:element name="return_duration" type="xs:string"/>
+                        <xs:element name="outbound_stops" type="xs:string"/>
+                        <xs:element name="return_stops" type="xs:string"/>
+                        <xs:element name="total_price" type="xs:string"/>
+                        <xs:element name="link" type="xs:string"/>
+                        <xs:element name="segments" type="tns:ArrayOfAirSegment"/>
+                        <xs:element name="products" type="tns:ArrayOfProduct"/>
+                        <xs:element name="timelimit" type="xs:string"/>
+                        <xs:element name="refund_before" type="xs:string"/>
+                        <xs:element name="refund_after" type="xs:string"/>
+                        <xs:element name="exchange_before" type="xs:string"/>
+                        <xs:element name="exchange_after" type="xs:string"/>
+                        <xs:element name="multipnr" type="xs:string"/>
+                        <xs:element minOccurs="0" name="linked_fares"
+                            nillable="true" type="tns:ArrayOfGetOptimalFaresLinkedFlightID"/>
+                        <xs:element name="services" type="tns:ArrayOfServices"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="AddUserInput">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="tns:CommonParameters">
+                            <xs:sequence>
+                                <xs:element name="login" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="last_name" type="xs:string"/>
+                                <xs:element minOccurs="0" name="name" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="second_name" type="xs:string"/>
+                                <xs:element name="email" type="xs:string"/>
+                                <xs:element name="password" type="xs:string"/>
+                                <xs:element name="confirm_password" type="xs:string"/>
+                                <xs:element minOccurs="0" name="active" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="personal_gender" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="personal_birthday" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="personal_phone" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="personal_mobile" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="personal_country" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="personal_zip" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="personal_city" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="personal_street" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="uf_personal_house" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="uf_personal_build" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="uf_personal_build2" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="uf_personal_flat" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="uf_notifprefer" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="uf_personal_doctype" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="uf_personal_docnum" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="uf_operno" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="uf_buyer_card1" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="uf_buyer_card2" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="uf_buyer_card3" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="admin_notes" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="strict_check" type="xs:string"/>
+                            </xs:sequence>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="AddUserOutput">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="error" type="tns:CIBESOAPError"/>
+                        <xs:element name="user_id" type="xs:string"/>
+                        <xs:element name="customer_code" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GetUserPropertiesInput">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="tns:CommonParameters">
+                            <xs:choice maxOccurs="1" minOccurs="1">
+                                <xs:element name="user_id" type="xs:string"/>
+                                <xs:element name="customer_code" type="xs:string"/>
+                                <xs:element name="login" type="xs:string"/>
+                            </xs:choice>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GetUserPropertiesOutput">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="error" type="tns:CIBESOAPError"/>
+                        <xs:element name="login" type="xs:string"/>
+                        <xs:element name="last_name" type="xs:string"/>
+                        <xs:element name="name" type="xs:string"/>
+                        <xs:element name="second_name" type="xs:string"/>
+                        <xs:element name="email" type="xs:string"/>
+                        <xs:element name="active" type="xs:string"/>
+                        <xs:element name="personal_gender" type="xs:string"/>
+                        <xs:element name="personal_birthday" type="xs:string"/>
+                        <xs:element name="personal_phone" type="xs:string"/>
+                        <xs:element name="personal_mobile" type="xs:string"/>
+                        <xs:element name="personal_country" type="xs:string"/>
+                        <xs:element name="personal_zip" type="xs:string"/>
+                        <xs:element name="personal_city" type="xs:string"/>
+                        <xs:element name="personal_street" type="xs:string"/>
+                        <xs:element name="uf_personal_house" type="xs:string"/>
+                        <xs:element name="uf_personal_build" type="xs:string"/>
+                        <xs:element name="uf_personal_build2" type="xs:string"/>
+                        <xs:element name="uf_personal_flat" type="xs:string"/>
+                        <xs:element name="uf_notifprefer" type="xs:string"/>
+                        <xs:element name="uf_personal_doctype" type="xs:string"/>
+                        <xs:element name="uf_personal_docnum" type="xs:string"/>
+                        <xs:element name="uf_operno" type="xs:string"/>
+                        <xs:element name="uf_buyer_card1" type="xs:string"/>
+                        <xs:element name="uf_buyer_card2" type="xs:string"/>
+                        <xs:element name="uf_buyer_card3" type="xs:string"/>
+                        <xs:element name="user_id" type="xs:string"/>
+                        <xs:element name="uf_customercode" type="xs:string"/>
+                        <xs:element name="timestamp_x" type="xs:string"/>
+                        <xs:element name="last_login" type="xs:string"/>
+                        <xs:element name="date_register" type="xs:string"/>
+                        <xs:element name="admin_notes" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SetUserPropertiesInput">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="tns:CommonParameters">
+                            <xs:sequence>
+                                <xs:element maxOccurs="1" minOccurs="1"
+                                    name="user_id" type="xs:string"/>
+                                <xs:element minOccurs="0" name="login" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="last_name" type="xs:string"/>
+                                <xs:element minOccurs="0" name="name" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="second_name" type="xs:string"/>
+                                <xs:element minOccurs="0" name="email" type="xs:string"/>
+                                <xs:sequence minOccurs="0">
+                                    <xs:element maxOccurs="1"
+                                    minOccurs="1" name="password" type="xs:string"/>
+                                    <xs:element maxOccurs="1"
+                                    minOccurs="1"
+                                    name="confirm_password" type="xs:string"/>
+                                </xs:sequence>
+                                <xs:element minOccurs="0" name="active" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="personal_gender" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="personal_birthday" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="personal_phone" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="personal_mobile" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="personal_country" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="personal_zip" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="personal_city" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="personal_street" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="uf_personal_house" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="uf_personal_build" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="uf_personal_build2" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="uf_personal_flat" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="uf_notifprefer" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="uf_personal_doctype" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="uf_personal_docnum" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="uf_operno" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="uf_buyer_card1" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="uf_buyer_card2" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="uf_buyer_card3" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="admin_notes" type="xs:string"/>
+                            </xs:sequence>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SetUserPropertiesOutput">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="error" type="tns:CIBESOAPError"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="CreateOrderInput">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="tns:CommonParameters">
+                            <xs:sequence>
+                                <xs:element minOccurs="0" name="user_id" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="passengers" type="tns:ArrayOfPassengers"/>
+                                <xs:element minOccurs="0"
+                                    name="ctc_gender" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="ctc_last_name" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="ctc_first_name" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="ctc_second_name" type="xs:string"/>
+                                <xs:element name="ctc_mail" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="ctc_phone2" type="xs:string"/>
+                                <xs:element name="ctc_phone" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="addr_country" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="addr_index" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="addr_city" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="addr_street" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="addr_house" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="addr_building" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="addr_building2" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="addr_flat" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="services" type="tns:ArrayOfServices"/>
+                            </xs:sequence>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="CreateOrderOutput">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="error" type="tns:CIBESOAPError"/>
+                        <xs:element name="order_id" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="UpdateOrderInput">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="tns:CommonParameters">
+                            <xs:sequence>
+                                <xs:element minOccurs="0"
+                                    name="order_id" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="ctc_gender" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="ctc_last_name" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="ctc_first_name" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="ctc_second_name" type="xs:string"/>
+                                <xs:element name="ctc_mail" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="ctc_phone2" type="xs:string"/>
+                                <xs:element name="ctc_phone" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="addr_country" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="addr_index" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="addr_city" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="addr_street" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="addr_house" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="addr_building" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="addr_building2" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="addr_flat" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="passengers" type="tns:ArrayOfUpdateOrderPassengers"/>
+                            </xs:sequence>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="UpdateOrderOutput">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="error" type="tns:CIBESOAPError"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="AddOrderServiceInput">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="tns:CommonParameters">
+                            <xs:sequence>
+                                <xs:element name="order_id" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="services" type="tns:ArrayOfServices"/>
+                            </xs:sequence>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="AddOrderServiceOutput">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="error" type="tns:CIBESOAPError"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="AddOrderItemInput">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="tns:CommonParameters">
+                            <xs:sequence>
+                                <xs:element minOccurs="0"
+                                    name="order_id" type="xs:string"/>
+                                <xs:element name="code" type="xs:string"/>
+                                <xs:element name="name" type="xs:string"/>
+                                <xs:element name="price" type="xs:string"/>
+                                <xs:element name="count" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="additional_data" type="xs:string"/>
+                            </xs:sequence>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="AddOrderItemOutput">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="error" type="tns:CIBESOAPError"/>
+                        <xs:element name="sum" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:complexType name="PayMethodPriceItem">
+                <xs:sequence>
+                    <xs:element name="currency" type="xs:string"/>
+                    <xs:element name="sum" type="xs:string"/>
+                    <xs:element name="currency_rate" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ArrayOfPayMethodPriceItem">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0"
+                        name="PayMethodPriceItem" nillable="true" type="tns:PayMethodPriceItem"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="PayMethod">
+                <xs:sequence>
+                    <xs:element name="pay_method_id" type="xs:string"/>
+                    <xs:element name="code" type="xs:string"/>
+                    <xs:element name="name" type="xs:string"/>
+                    <xs:element name="group_name" type="xs:string"/>
+                    <xs:element name="order_price" type="xs:string"/>
+                    <xs:element minOccurs="0" name="price_details" type="tns:ArrayOfPayMethodPriceItem"/>
+                    <xs:element minOccurs="0" name="type" type="xs:string"/>
+                    <xs:element minOccurs="0" name="id" type="xs:string"/>
+                    <xs:element minOccurs="0" name="url" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ArrayOfPayMethod">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0"
+                        name="PayMethod" nillable="true" type="tns:PayMethod"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="GetOrderPayMethodsInput">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="tns:CommonParameters">
+                            <xs:sequence>
+                                <xs:element minOccurs="0"
+                                    name="order_id" type="xs:string"/>
+                            </xs:sequence>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GetOrderPayMethodsOutput">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="error" type="tns:CIBESOAPError"/>
+                        <xs:element name="pay_methods" type="tns:ArrayOfPayMethod"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SetOrderPayMethodInput">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="tns:CommonParameters">
+                            <xs:sequence>
+                                <xs:element minOccurs="0"
+                                    name="order_id" type="xs:string"/>
+                                <xs:element name="pay_method_id" type="xs:string"/>
+                                <xs:element minOccurs="0" name="notify" type="xs:string"/>
+                                <xs:element minOccurs="0" name="data" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="donot_init_payment" type="xs:string"/>
+                            </xs:sequence>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SetOrderPayMethodOutput">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="error" type="tns:CIBESOAPError"/>
+                        <xs:element name="sum" type="xs:string"/>
+                        <xs:element minOccurs="0" name="payment_id" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="BookInput">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="tns:CommonParameters">
+                            <xs:sequence>
+                                <xs:element minOccurs="0" name="notify" type="xs:string"/>
+                                <xs:element minOccurs="0" name="data" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="max_timelimit" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="donot_init_payment" type="xs:string"/>
+                            </xs:sequence>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="BookOutput">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="error" type="tns:CIBESOAPError"/>
+                        <xs:element name="rloc" type="xs:string"/>
+                        <xs:element name="payment_id" type="xs:string"/>
+                        <xs:element name="timelimit" type="xs:string"/>
+                        <xs:element name="multipnr" type="xs:string"/>
+                        <xs:element minOccurs="0" name="order_id" type="xs:string"/>
+                        <xs:element name="order_key" type="xs:string"/>
+                        <xs:element name="confirmed_price" type="xs:string"/>
+                        <xs:element name="segments" type="tns:ArrayOfAirSegment"/>
+                        <xs:element minOccurs="0" name="passengers" type="tns:ArrayOfPassengers"/>
+                        <xs:element minOccurs="0" name="ctc_gender" type="xs:string"/>
+                        <xs:element minOccurs="0" name="ctc_last_name" type="xs:string"/>
+                        <xs:element minOccurs="0" name="ctc_first_name" type="xs:string"/>
+                        <xs:element minOccurs="0" name="ctc_second_name" type="xs:string"/>
+                        <xs:element minOccurs="0" name="ctc_mail" type="xs:string"/>
+                        <xs:element minOccurs="0" name="ctc_phone2" type="xs:string"/>
+                        <xs:element minOccurs="0" name="ctc_phone" type="xs:string"/>
+                        <xs:element minOccurs="0" name="full_price" type="xs:string"/>
+                        <xs:element minOccurs="0" name="partner_fee" type="xs:string"/>
+                        <xs:element minOccurs="0" name="parner_discount" type="xs:string"/>
+                        <xs:element minOccurs="0"
+                            name="partner_discount" type="xs:string"/>
+                        <xs:element minOccurs="0" name="pay_method_id" type="xs:string"/>
+                        <xs:element minOccurs="0" name="pay_method_code" type="xs:string"/>
+                        <xs:element minOccurs="0" name="services" type="tns:ArrayOfServices"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="CalculatePricingOutput">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="error" type="tns:CIBESOAPError"/>
+                        <xs:element name="values" type="xs:string"/>
+                        <xs:element name="log" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="StartPaymentInput">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="tns:CommonParameters">
+                            <xs:sequence>
+                                <xs:element name="order_id" type="xs:string"/>
+                                <xs:element name="back_url" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="donot_init_payment" type="xs:string"/>
+                            </xs:sequence>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="StartPaymentOutput">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="error" type="tns:CIBESOAPError"/>
+                        <xs:element name="redirect_url" type="xs:string"/>
+                        <xs:element name="redirect_post_data" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="RefundInput">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="tns:CommonParameters">
+                            <xs:sequence>
+                                <xs:element name="order_id" type="xs:string"/>
+                                <xs:element minOccurs="0" name="amount" type="xs:string"/>
+                            </xs:sequence>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="RefundOutput">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="error" type="tns:CIBESOAPError"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="TicketInput">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="tns:CommonParameters">
+                            <xs:sequence>
+                                <xs:element minOccurs="0"
+                                    name="order_id" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="payment_id" type="xs:string"/>
+                                <xs:element minOccurs="0" name="rloc" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="additional_data" type="xs:string"/>
+                            </xs:sequence>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="TicketOutput">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="error" type="tns:CIBESOAPError"/>
+                        <xs:element minOccurs="0" name="order_id" type="xs:string"/>
+                        <xs:element minOccurs="0" name="rloc" type="xs:string"/>
+                        <xs:element minOccurs="0" name="ticket_numbers" type="tns:ArrayOf_soapenc_string"/>
+                        <xs:element minOccurs="0" name="itineraries" type="tns:ArrayOf_soapenc_string"/>
+                        <xs:element minOccurs="0" name="pdf_link" type="xs:string"/>
+                        <xs:element minOccurs="0" name="services" type="tns:ArrayOfServices"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:complexType name="GetAirlineCitiesCity">
+                <xs:sequence>
+                    <xs:element name="city" type="xs:string"/>
+                    <xs:element name="city2" type="xs:string"/>
+                    <xs:element name="name" type="xs:string"/>
+                    <xs:element name="name_ru" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ArrayOfGetAirlineCitiesCity">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0"
+                        name="GetAirlineCitiesCity" nillable="true" type="tns:GetAirlineCitiesCity"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="GetAirlineCitiesInput">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="tns:CommonParameters">
+                            <xs:sequence>
+                                <xs:element minOccurs="1" name="ak" type="xs:string"/>
+                            </xs:sequence>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GetAirlineCitiesOutput">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="error" type="tns:CIBESOAPError"/>
+                        <xs:element name="cities" type="tns:ArrayOfGetAirlineCitiesCity"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:complexType name="GetStatisticsService">
+                <xs:sequence>
+                    <xs:element name="code" type="xs:string"/>
+                    <xs:element name="sum" type="xs:string"/>
+                    <xs:element name="count" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ArrayOfGetStatisticsServices">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0"
+                        name="GetStatisticsService" nillable="true" type="tns:GetStatisticsService"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="GetStatisticsFee">
+                <xs:sequence>
+                    <xs:element name="code" type="xs:string"/>
+                    <xs:element name="sum" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ArrayOfGetStatisticsFees">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0"
+                        name="GetStatisticsFee" nillable="true" type="tns:GetStatisticsFee"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="GetStatisticsCounters">
+                <xs:sequence>
+                    <xs:element name="counter_type" type="xs:string"/>
+                    <xs:element name="counter_value" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ArrayOfGetStatisticsCounters">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0"
+                        name="GetStatisticsCounters" nillable="true" type="tns:GetStatisticsCounters"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="GetStatisticsInterval">
+                <xs:sequence>
+                    <xs:element name="timestamp" type="xs:string"/>
+                    <xs:element name="search_count" type="xs:string"/>
+                    <xs:element name="book_count" type="xs:string"/>
+                    <xs:element name="book_seats_count" type="xs:string"/>
+                    <xs:element name="sale_count" type="xs:string"/>
+                    <xs:element name="ticket_count" type="xs:string"/>
+                    <xs:element name="sum" type="xs:string"/>
+                    <xs:element name="fees" type="tns:ArrayOfGetStatisticsFees"/>
+                    <xs:element name="services" type="tns:ArrayOfGetStatisticsServices"/>
+                    <xs:element name="counters" type="tns:ArrayOfGetStatisticsCounters"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ArrayOfGetStatisticsInterval">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0"
+                        name="GetStatisticsInterval" nillable="true" type="tns:GetStatisticsInterval"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="GetStatisticsInput">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="tns:CommonParameters">
+                            <xs:sequence>
+                                <xs:element name="timestamp_from" type="xs:string"/>
+                                <xs:element name="timestamp_to" type="xs:string"/>
+                            </xs:sequence>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GetStatisticsOutput">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="error" type="tns:CIBESOAPError"/>
+                        <xs:element name="intervals" type="tns:ArrayOfGetStatisticsInterval"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:complexType name="GetListOrderTicket">
+                <xs:sequence>
+                    <xs:element name="docno" type="xs:string"/>
+                    <xs:element name="passcat" type="xs:string"/>
+                    <xs:element name="fare" type="xs:string"/>
+                    <xs:element name="taxes" type="xs:string"/>
+                    <xs:element name="price_active" type="xs:string"/>
+                    <xs:element name="partner_discount" type="xs:string"/>
+                    <xs:element name="partner_discount_active" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ArrayOfGetListOrderTicket">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0"
+                        name="GetListOrderTicket" nillable="true" type="tns:GetListOrderTicket"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="GetOrderListOrder">
+                <xs:sequence>
+                    <xs:element name="partner_id" type="xs:string"/>
+                    <xs:element name="order_id" type="xs:string"/>
+                    <xs:element name="finalized" type="xs:string"/>
+                    <xs:element name="payment_id" type="xs:string"/>
+                    <xs:element name="partner_data" type="xs:string"/>
+                    <xs:element name="partner_data_ex" type="xs:string"/>
+                    <xs:element name="tickets_price" type="xs:string"/>
+                    <xs:element name="status" type="xs:string"/>
+                    <xs:element name="owrt" type="xs:string"/>
+                    <xs:element name="departure_point" type="xs:string"/>
+                    <xs:element name="arrival_point" type="xs:string"/>
+                    <xs:element name="segment_count" type="xs:string"/>
+                    <xs:element name="segments" type="tns:ArrayOfAirSegment"/>
+                    <xs:element name="passenger_count" type="xs:string"/>
+                    <xs:element name="booking_timestamp" type="xs:string"/>
+                    <xs:element name="ticketing_timestamp" type="xs:string"/>
+                    <xs:element name="canceled" type="xs:string"/>
+                    <xs:element name="timelimit" type="xs:string"/>
+                    <xs:element name="rloc" type="xs:string"/>
+                    <xs:element name="multipnr" type="xs:string"/>
+                    <xs:element name="tickets_active" type="tns:ArrayOfGetListOrderTicket"/>
+                    <xs:element name="tickets_returned" type="tns:ArrayOfGetListOrderTicket"/>
+                    <xs:element name="full_price" type="xs:string"/>
+                    <xs:element name="partner_fee" type="xs:string"/>
+                    <xs:element name="full_price_active" type="xs:string"/>
+                    <xs:element name="parner_discount" type="xs:string"/>
+                    <xs:element name="parner_discount_active" type="xs:string"/>
+                    <xs:element name="partner_discount" type="xs:string"/>
+                    <xs:element name="partner_discount_active" type="xs:string"/>
+                    <xs:element name="transfer_start_time" type="xs:string"/>
+                    <xs:element name="transfer_end_time" type="xs:string"/>
+                    <xs:element name="pay_method_id" type="xs:string"/>
+                    <xs:element name="pay_method_code" type="xs:string"/>
+                    <xs:element minOccurs="0" name="ctc_gender" type="xs:string"/>
+                    <xs:element minOccurs="0" name="ctc_last_name" type="xs:string"/>
+                    <xs:element minOccurs="0" name="ctc_first_name" type="xs:string"/>
+                    <xs:element minOccurs="0" name="ctc_second_name" type="xs:string"/>
+                    <xs:element minOccurs="0" name="ctc_mail" type="xs:string"/>
+                    <xs:element minOccurs="0" name="ctc_phone2" type="xs:string"/>
+                    <xs:element minOccurs="0" name="ctc_phone" type="xs:string"/>
+                    <xs:element minOccurs="0" name="services" type="tns:ArrayOfServices"/>
+                    <xs:element name="passengers" type="tns:ArrayOfPassengers"/>
+                    <xs:element name="order_key" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ArrayOfGetOrderListOrder">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0"
+                        name="GetOrderListOrder" nillable="true" type="tns:GetOrderListOrder"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="GetOrderListInput">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="tns:CommonParameters">
+                            <xs:sequence>
+                                <xs:element minOccurs="0"
+                                    name="timestamp_from" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="timestamp_to" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="transfer_start_from" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="transfer_start_to" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="transfer_end_from" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="transfer_end_to" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="order_id" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="payment_id" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="ctc_mail" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="ctc_phone" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="partner_data" type="xs:string"/>
+                                <xs:element minOccurs="0"
+                                    name="check_booking" type="xs:string"/>
+                            </xs:sequence>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GetOrderListOutput">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="error" type="tns:CIBESOAPError"/>
+                        <xs:element name="currency" type="xs:string"/>
+                        <xs:element name="orders" type="tns:ArrayOfGetOrderListOrder"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:complexType name="GetFareRulesCategory">
+                <xs:sequence>
+                    <xs:element name="id" type="xs:string"/>
+                    <xs:element name="name" type="xs:string"/>
+                    <xs:element name="text" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ArrayOfGetFareRulesCategory">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0"
+                        name="GetFareRulesCategory" nillable="true" type="tns:GetFareRulesCategory"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="GetFareRulesInput">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="tns:CommonParameters">
+                            <xs:sequence>
+                                <xs:element name="fare_rules_key" type="xs:string"/>
+                            </xs:sequence>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GetFareRulesOutput">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="error" type="tns:CIBESOAPError"/>
+                        <xs:element name="fare_code" type="xs:string"/>
+                        <xs:element name="categories" type="tns:ArrayOfGetFareRulesCategory"/>
+                        <xs:element name="refund_before" type="xs:string"/>
+                        <xs:element name="refund_after" type="xs:string"/>
+                        <xs:element name="exchange_before" type="xs:string"/>
+                        <xs:element name="exchange_after" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="Cancel">
+        <wsdl:part element="tns:CancelInput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="CancelResponse">
+        <wsdl:part element="tns:CancelOutput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="Void">
+        <wsdl:part element="tns:VoidInput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="VoidResponse">
+        <wsdl:part element="tns:VoidOutput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="AddPNRComment">
+        <wsdl:part element="tns:AddPNRCommentInput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="AddPNRCommentResponse">
+        <wsdl:part element="tns:AddPNRCommentOutput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="LoadPNR">
+        <wsdl:part element="tns:LoadPNRInput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="LoadPNRResponse">
+        <wsdl:part element="tns:BookOutput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="CalculatePricing">
+        <wsdl:part element="tns:CalculatePricingInput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="CalculatePricingResponse">
+        <wsdl:part element="tns:CalculatePricingOutput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="RevalidateAsync">
+        <wsdl:part element="tns:RevalidateAsyncInput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="RevalidateAsyncResponse">
+        <wsdl:part element="tns:RevalidateAsyncOutput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="UpdatePaymentData">
+        <wsdl:part element="tns:UpdatePaymentDataInput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="UpdatePaymentDataResponse">
+        <wsdl:part element="tns:UpdatePaymentDataOutput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="GetPaymentParams">
+        <wsdl:part element="tns:GetPaymentParamsInput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="GetPaymentParamsResponse">
+        <wsdl:part element="tns:GetPaymentParamsOutput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="LogEvent">
+        <wsdl:part element="tns:LogEventInput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="LogEventResponse">
+        <wsdl:part element="tns:LogEventOutput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="StartSession">
+        <wsdl:part element="tns:StartSessionInput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="StartSessionResponse">
+        <wsdl:part element="tns:StartSessionOutput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="EndSession">
+        <wsdl:part element="tns:EndSessionInput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="EndSessionResponse">
+        <wsdl:part element="tns:EndSessionOutput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="GetOptimalFares">
+        <wsdl:part element="tns:GetOptimalFaresInput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="GetOptimalFaresResponse">
+        <wsdl:part element="tns:GetOptimalFaresOutput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="GetOrderServices">
+        <wsdl:part element="tns:GetOrderServicesInput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="GetOrderServicesResponse">
+        <wsdl:part element="tns:GetOrderServicesOutput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="GetMinFares">
+        <wsdl:part element="tns:GetMinFaresInput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="GetMinFaresResponse">
+        <wsdl:part element="tns:GetOptimalFaresOutput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="GetAvailability">
+        <wsdl:part element="tns:GetAvailabilityInput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="GetAvailabilityResponse">
+        <wsdl:part element="tns:GetAvailabilityOutput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="SelectOffer">
+        <wsdl:part element="tns:SelectOfferInput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="SelectOfferResponse">
+        <wsdl:part element="tns:SelectOfferOutput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="AddUser">
+        <wsdl:part element="tns:AddUserInput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="AddUserResponse">
+        <wsdl:part element="tns:AddUserOutput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="GetUserProperties">
+        <wsdl:part element="tns:GetUserPropertiesInput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="GetUserPropertiesResponse">
+        <wsdl:part element="tns:GetUserPropertiesOutput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="SetUserProperties">
+        <wsdl:part element="tns:SetUserPropertiesInput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="SetUserPropertiesResponse">
+        <wsdl:part element="tns:SetUserPropertiesOutput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="CreateOrder">
+        <wsdl:part element="tns:CreateOrderInput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="CreateOrderResponse">
+        <wsdl:part element="tns:CreateOrderOutput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="UpdateOrder">
+        <wsdl:part element="tns:UpdateOrderInput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="UpdateOrderResponse">
+        <wsdl:part element="tns:UpdateOrderOutput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="AddOrderService">
+        <wsdl:part element="tns:AddOrderServiceInput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="AddOrderServiceResponse">
+        <wsdl:part element="tns:AddOrderServiceOutput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="AddOrderItem">
+        <wsdl:part element="tns:AddOrderItemInput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="AddOrderItemResponse">
+        <wsdl:part element="tns:AddOrderItemOutput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="GetOrderPayMethods">
+        <wsdl:part element="tns:GetOrderPayMethodsInput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="GetOrderPayMethodsResponse">
+        <wsdl:part element="tns:GetOrderPayMethodsOutput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="SetOrderPayMethod">
+        <wsdl:part element="tns:SetOrderPayMethodInput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="SetOrderPayMethodResponse">
+        <wsdl:part element="tns:SetOrderPayMethodOutput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="Book">
+        <wsdl:part element="tns:BookInput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="BookResponse">
+        <wsdl:part element="tns:BookOutput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="StartPayment">
+        <wsdl:part element="tns:StartPaymentInput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="StartPaymentResponse">
+        <wsdl:part element="tns:StartPaymentOutput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="Refund">
+        <wsdl:part element="tns:RefundInput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="RefundResponse">
+        <wsdl:part element="tns:RefundOutput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="Ticket">
+        <wsdl:part element="tns:TicketInput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="TicketResponse">
+        <wsdl:part element="tns:TicketOutput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="GetAirlineCities">
+        <wsdl:part element="tns:GetAirlineCitiesInput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="GetAirlineCitiesResponse">
+        <wsdl:part element="tns:GetAirlineCitiesOutput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="GetOrderList">
+        <wsdl:part element="tns:GetOrderListInput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="GetOrderListResponse">
+        <wsdl:part element="tns:GetOrderListOutput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="GetStatistics">
+        <wsdl:part element="tns:GetStatisticsInput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="GetStatisticsResponse">
+        <wsdl:part element="tns:GetStatisticsOutput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="GetFareRules">
+        <wsdl:part element="tns:GetFareRulesInput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="GetFareRulesResponse">
+        <wsdl:part element="tns:GetFareRulesOutput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:portType name="TAISSoapPort">
+        <wsdl:operation name="Cancel">
+            <wsdl:input message="tns:Cancel"/>
+            <wsdl:output message="tns:CancelResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="Void">
+            <wsdl:input message="tns:Void"/>
+            <wsdl:output message="tns:VoidResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="AddPNRComment">
+            <wsdl:input message="tns:AddPNRComment"/>
+            <wsdl:output message="tns:AddPNRCommentResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="LoadPNR">
+            <wsdl:input message="tns:LoadPNR"/>
+            <wsdl:output message="tns:LoadPNRResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="CalculatePricing">
+            <wsdl:input message="tns:CalculatePricing"/>
+            <wsdl:output message="tns:CalculatePricingResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="RevalidateAsync">
+            <wsdl:input message="tns:RevalidateAsync"/>
+            <wsdl:output message="tns:RevalidateAsyncResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="UpdatePaymentData">
+            <wsdl:input message="tns:UpdatePaymentData"/>
+            <wsdl:output message="tns:UpdatePaymentDataResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetPaymentParams">
+            <wsdl:input message="tns:GetPaymentParams"/>
+            <wsdl:output message="tns:GetPaymentParamsResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="LogEvent">
+            <wsdl:input message="tns:LogEvent"/>
+            <wsdl:output message="tns:LogEventResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="StartSession">
+            <wsdl:input message="tns:StartSession"/>
+            <wsdl:output message="tns:StartSessionResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="EndSession">
+            <wsdl:input message="tns:EndSession"/>
+            <wsdl:output message="tns:EndSessionResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetOptimalFares">
+            <wsdl:input message="tns:GetOptimalFares"/>
+            <wsdl:output message="tns:GetOptimalFaresResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetOrderServices">
+            <wsdl:input message="tns:GetOrderServices"/>
+            <wsdl:output message="tns:GetOrderServicesResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetMinFares">
+            <wsdl:input message="tns:GetMinFares"/>
+            <wsdl:output message="tns:GetMinFaresResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetAvailability">
+            <wsdl:input message="tns:GetAvailability"/>
+            <wsdl:output message="tns:GetAvailabilityResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="SelectOffer">
+            <wsdl:input message="tns:SelectOffer"/>
+            <wsdl:output message="tns:SelectOfferResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="AddUser">
+            <wsdl:input message="tns:AddUser"/>
+            <wsdl:output message="tns:AddUserResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetUserProperties">
+            <wsdl:input message="tns:GetUserProperties"/>
+            <wsdl:output message="tns:GetUserPropertiesResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="SetUserProperties">
+            <wsdl:input message="tns:SetUserProperties"/>
+            <wsdl:output message="tns:SetUserPropertiesResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="CreateOrder">
+            <wsdl:input message="tns:CreateOrder"/>
+            <wsdl:output message="tns:CreateOrderResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="UpdateOrder">
+            <wsdl:input message="tns:UpdateOrder"/>
+            <wsdl:output message="tns:UpdateOrderResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="AddOrderService">
+            <wsdl:input message="tns:AddOrderService"/>
+            <wsdl:output message="tns:AddOrderServiceResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="AddOrderItem">
+            <wsdl:input message="tns:AddOrderItem"/>
+            <wsdl:output message="tns:AddOrderItemResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetOrderPayMethods">
+            <wsdl:input message="tns:GetOrderPayMethods"/>
+            <wsdl:output message="tns:GetOrderPayMethodsResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="SetOrderPayMethod">
+            <wsdl:input message="tns:SetOrderPayMethod"/>
+            <wsdl:output message="tns:SetOrderPayMethodResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="Book">
+            <wsdl:input message="tns:Book"/>
+            <wsdl:output message="tns:BookResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="StartPayment">
+            <wsdl:input message="tns:StartPayment"/>
+            <wsdl:output message="tns:StartPaymentResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="Refund">
+            <wsdl:input message="tns:Refund"/>
+            <wsdl:output message="tns:RefundResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="Ticket">
+            <wsdl:input message="tns:Ticket"/>
+            <wsdl:output message="tns:TicketResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetAirlineCities">
+            <wsdl:input message="tns:GetAirlineCities"/>
+            <wsdl:output message="tns:GetAirlineCitiesResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetOrderList">
+            <wsdl:input message="tns:GetOrderList"/>
+            <wsdl:output message="tns:GetOrderListResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetStatistics">
+            <wsdl:input message="tns:GetStatistics"/>
+            <wsdl:output message="tns:GetStatisticsResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetFareRules">
+            <wsdl:input message="tns:GetFareRules"/>
+            <wsdl:output message="tns:GetFareRulesResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="TAISSoapBinding" type="tns:TAISSoapPort">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="Cancel">
+            <soap:operation soapAction="urn:#Cancel"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="Void">
+            <soap:operation soapAction="urn:#Void"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="AddPNRComment">
+            <soap:operation soapAction="urn:#AddPNRComment"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="LoadPNR">
+            <soap:operation soapAction="urn:#LoadPNR"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="CalculatePricing">
+            <soap:operation soapAction="urn:#CalculatePricing"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="RevalidateAsync">
+            <soap:operation soapAction="urn:#RevalidateAsync"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="UpdatePaymentData">
+            <soap:operation soapAction="urn:#UpdatePaymentData"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetPaymentParams">
+            <soap:operation soapAction="urn:#GetPaymentParams"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="LogEvent">
+            <soap:operation soapAction="urn:#LogEvent"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="StartSession">
+            <soap:operation soapAction="urn:#StartSession"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="EndSession">
+            <soap:operation soapAction="urn:#EndSession"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetOptimalFares">
+            <soap:operation soapAction="urn:#GetOptimalFares"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetOrderServices">
+            <soap:operation soapAction="urn:#GetOrderServices"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetMinFares">
+            <soap:operation soapAction="urn:#GetMinFares"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetAvailability">
+            <soap:operation soapAction="urn:#GetAvailability"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SelectOffer">
+            <soap:operation soapAction="urn:#SelectOffer"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="AddUser">
+            <soap:operation soapAction="urn:#AddUser"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetUserProperties">
+            <soap:operation soapAction="urn:#GetUserProperties"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SetUserProperties">
+            <soap:operation soapAction="urn:#SetUserProperties"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="CreateOrder">
+            <soap:operation soapAction="urn:#CreateOrder"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="UpdateOrder">
+            <soap:operation soapAction="urn:#UpdateOrder"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="AddOrderService">
+            <soap:operation soapAction="urn:#AddOrderService"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="AddOrderItem">
+            <soap:operation soapAction="urn:#AddOrderItem"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetOrderPayMethods">
+            <soap:operation soapAction="urn:#GetOrderPayMethods"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SetOrderPayMethod">
+            <soap:operation soapAction="urn:#SetOrderPayMethod"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="Book">
+            <soap:operation soapAction="urn:#Book"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="StartPayment">
+            <soap:operation soapAction="urn:#StartPayment"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="Refund">
+            <soap:operation soapAction="urn:#Refund"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="Ticket">
+            <soap:operation soapAction="urn:#Ticket"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetAirlineCities">
+            <soap:operation soapAction="urn:#GetAirlineCities"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetOrderList">
+            <soap:operation soapAction="urn:#GetOrderList"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetStatistics">
+            <soap:operation soapAction="urn:#GetStatistics"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetFareRules">
+            <soap:operation soapAction="urn:#GetFareRules"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="TAIS">
+        <wsdl:port binding="tns:TAISSoapBinding" name="TAISSoapPort">
+            <soap:address location="http://search.biletix.ru/bitrix/components/travelshop/ibe.soap/travelshop_booking.php"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

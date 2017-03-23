@@ -21,19 +21,25 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.ow2.easywsdl.wsdl.api.WSDLException;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
 
 @Mojo(name = "process", defaultPhase = LifecyclePhase.GENERATE_RESOURCES)
 public class WsdlLancetMojo extends AbstractMojo {
     /**
      * Files rules.
-     *
-     * @parameter
      */
     @Parameter(required = true)
-    private Wsdl[] wsdls;
+    private WsdlSetup[] wsdls;
 
     public void execute() throws MojoExecutionException {
-        new WsdlLancet(getLog())
-                .process(wsdls);
+        WsdlLancet lancet = new WsdlLancet(getLog());
+        try {
+            lancet.process(wsdls);
+        } catch (URISyntaxException | WSDLException | IOException e) {
+            throw new MojoExecutionException("cannot process files", e);
+        }
     }
 }
