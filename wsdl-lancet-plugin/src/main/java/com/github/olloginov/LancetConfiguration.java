@@ -4,19 +4,23 @@ import lombok.*;
 import org.apache.maven.plugins.annotations.Parameter;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class WsdlSetup {
+@Builder
+public class LancetConfiguration {
     @Parameter(required = true)
     private File source;
     @Parameter(required = true)
     private File target;
     @Parameter
-    private WsdlRule include;
+    private Map<String, String> namespaces = new HashMap<>();
     @Parameter
-    private WsdlRule exclude;
+    private FilterTree include = new FilterTree();
+    @Parameter
+    private FilterTree exclude = new FilterTree();
 }

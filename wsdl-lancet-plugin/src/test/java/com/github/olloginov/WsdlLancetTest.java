@@ -4,6 +4,7 @@ import org.apache.maven.plugin.logging.SystemStreamLog;
 import org.junit.Test;
 
 import java.io.*;
+import java.util.TreeMap;
 
 import static org.junit.Assert.assertEquals;
 
@@ -13,26 +14,31 @@ public class WsdlLancetTest {
     }
 
     @Test
-    public void processEbay() throws Exception {
-        File wsdlTarget = File.createTempFile("wsdl-lancet-test", ".wsdl");
-        File wsdlSource = new File(WsdlLancetTest.class.getResource("/biletix-source.wsdl").getFile());
-        WsdlSetup wsdl = WsdlSetup.builder()
-                .source(wsdlSource)
-                .target(wsdlTarget)
-                .include(new WsdlRule(
-                                arrayOf(
-                                        new BindingRule("TAISSoapBinding",
-                                                arrayOf(
-                                                        new BindingOperationRule("GetMinFares")
-                                                )))
+    public void processBiletix() throws Exception {
+        File target = File.createTempFile("wsdl-lancet-test", ".wsdl");
+        File source = new File(WsdlLancetTest.class.getResource("/biletix-source.wsdl").getFile());
+        LancetConfiguration configuration = new LancetConfiguration(
+                source, target,
+                new TreeMap<String, String>() {{
+                    put("tais", "http://www.tais.ru/");
+                }},
+                new FilterTree(
+                        arrayOf(
+                                new FilterPortType(
+                                        "tais:TAISSoapPort",
+                                        arrayOf(
+                                                new FilterName("tais:GetOptimalFares")
+                                        )
+                                )
                         )
-                )
-                .build();
+                ),
+                new FilterTree()
+        );
 
-        WsdlLancet lancet = new WsdlLancet(new SystemStreamLog());
-        lancet.process(new WsdlSetup[]{wsdl});
+        LancetWrapper lancet = new LancetWrapper(new SystemStreamLog());
+        lancet.process(new LancetConfiguration[]{configuration});
 
-        assertContentEquals(new File(WsdlLancetTest.class.getResource("/biletix-target.wsdl").getFile()), wsdlTarget);
+        assertContentEquals(new File(WsdlLancetTest.class.getResource("/biletix-target.wsdl").getFile()), target);
     }
 
     private static String readFile(File file) throws IOException {

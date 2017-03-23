@@ -1,5 +1,7 @@
 package com.github.olloginov;
 
+import java.util.Map;
+
 public interface Lancet {
-    void applyInclude(WsdlRule rule);
+    void process(FilterTree include, FilterTree exclude);
 }

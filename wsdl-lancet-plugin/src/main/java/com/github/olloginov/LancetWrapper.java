@@ -1,8 +1,9 @@
 package com.github.olloginov;
 
+import com.github.olloginov.support.NamespaceContextMap;
+import com.github.olloginov.support.XmlUtil;
 import com.github.olloginov.wsdl11.LancetWsdl11;
 import org.apache.maven.plugin.logging.Log;
-import org.ow2.easywsdl.wsdl.api.WSDLException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
@@ -18,11 +19,11 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.URISyntaxException;
 
-public class WsdlLancet {
+class LancetWrapper {
     private final Log log;
     private final DOMImplementationLS domLS;
 
-    public WsdlLancet(Log log) {
+    public LancetWrapper(Log log) {
         this.log = log;
         try {
             domLS = (DOMImplementationLS) DOMImplementationRegistry.newInstance().getDOMImplementation("LS");
@@ -35,13 +36,13 @@ public class WsdlLancet {
         }
     }
 
-    public void process(WsdlSetup[] files) throws IOException, WSDLException, URISyntaxException {
-        if (files == null || files.length == 0) {
+    public void process(LancetConfiguration[] configurations) throws IOException, URISyntaxException {
+        if (configurations == null || configurations.length == 0) {
             return;
         }
 
-        for (WsdlSetup setup : files) {
-            process(setup);
+        for (LancetConfiguration configuration : configurations) {
+            process(configuration);
         }
     }
 
@@ -52,7 +53,7 @@ public class WsdlLancet {
         return element;
     }
 
-    private void process(WsdlSetup setup) throws IOException, WSDLException, URISyntaxException {
+    private void process(LancetConfiguration setup) throws IOException, URISyntaxException {
         File source = requireArgument(setup.getSource(), "parameter 'source' is not set");
         if (!source.exists()) {
             throw new IllegalArgumentException("source file '" + setup.getSource() + "' is not set");
@@ -78,7 +79,26 @@ public class WsdlLancet {
         }
 
         log.info("process " + source);
-        lancet.applyInclude(setup.getInclude());
+
+        final NamespaceContextMap namespaceContextMap = new NamespaceContextMap(setup.getNamespaces());
+        setup.getInclude().visit(new FilterVisitor() {
+            @Override
+            public void onFilterPortType(FilterPortType filterPortType) {
+                resolveName(filterPortType);
+            }
+
+            @Override
+            public void onFilterName(FilterName filterName) {
+                resolveName(filterName);
+            }
+
+            void resolveName(FilterNamedElement filterNamedElement) {
+                filterNamedElement.setName(XmlUtil.resolveQName(filterNamedElement.getName(), namespaceContextMap).toString());
+            }
+        });
+
+
+        lancet.process(setup.getInclude(), setup.getExclude());
 
         log.info("write " + target);
         saveWsdl(dom, target);
@@ -88,7 +108,7 @@ public class WsdlLancet {
         return new QName(element.getNamespaceURI(), element.getLocalName());
     }
 
-    private void saveWsdl(Document document, File target) throws WSDLException, IOException {
+    private void saveWsdl(Document document, File target) throws IOException {
         LSSerializer serializer = domLS.createLSSerializer();
         serializer.getDomConfig().setParameter("format-pretty-print", Boolean.TRUE); // Set this to true if the output needs to be beautified.
         serializer.getDomConfig().setParameter("xml-declaration", true); // Set this to true if the declaration is needed to be outputted.
