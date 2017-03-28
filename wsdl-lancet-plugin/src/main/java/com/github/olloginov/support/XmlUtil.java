@@ -6,7 +6,7 @@ import javax.xml.namespace.QName;
 import static javax.xml.XMLConstants.DEFAULT_NS_PREFIX;
 
 public class XmlUtil {
-    public static QName resolveQName(String name, NamespaceContext namespaceContext) {
+    public static QName fullQName(String name, NamespaceContext namespaceContext) {
         int colonIndex = name.indexOf(':');
         if (colonIndex == -1) {
             return new QName(namespaceContext.getNamespaceURI(DEFAULT_NS_PREFIX), name);

@@ -1,5 +1,6 @@
 package com.github.olloginov.support;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
@@ -13,7 +14,8 @@ import java.util.Iterator;
 
 @RequiredArgsConstructor
 public class SmartNode {
-    private final Node node;
+    @Getter
+    private final Node delegate;
 
     public SmartNode() {
         this(null);
@@ -23,37 +25,33 @@ public class SmartNode {
         this((Node) node);
     }
 
-    public String getAttribute(String name) {
-        if (node == null) {
-            return null;
-        }
-        Node namedItem = node.getAttributes().getNamedItem(name);
-        if (namedItem == null) {
-            return null;
-        }
-        return namedItem.getNodeValue();
-    }
-
     public String getAttributeOrEmpty(String name) {
-        if (node == null) {
+        if (delegate == null) {
             return "";
         }
-        Node namedItem = node.getAttributes().getNamedItem(name);
+        Node namedItem = delegate.getAttributes().getNamedItem(name);
         if (namedItem == null) {
             return "";
         }
         return namedItem.getNodeValue();
     }
 
-    public QName getAttributeQName(String attributeName) {
-        return uriQName(getAttributeOrEmpty(attributeName));
+    public String getAttributeOrElse(String name, String noneValue) {
+        if (delegate == null) {
+            return noneValue;
+        }
+        Node namedItem = delegate.getAttributes().getNamedItem(name);
+        if (namedItem == null) {
+            return noneValue;
+        }
+        return namedItem.getNodeValue();
     }
 
-    public QName uriQName(String colonName) {
-        return XmlUtil.resolveQName(colonName, new NamespaceContext() {
+    public QName fullQName(String colonName) {
+        return XmlUtil.fullQName(colonName, new NamespaceContext() {
             @Override
-            public String getNamespaceURI(String s) {
-                return new SmartNode(node.getOwnerDocument().getDocumentElement()).getAttributeOrEmpty("xmlns:" + s);
+            public String getNamespaceURI(String prefix) {
+                return delegate.lookupNamespaceURI(prefix);
             }
 
             @Override
@@ -69,13 +67,13 @@ public class SmartNode {
     }
 
     public void remove() {
-        if (node == null) {
+        if (delegate == null) {
             return;
         }
-        Node parent = node.getParentNode();
+        Node parent = delegate.getParentNode();
         if (parent != null) {
             try {
-                parent.removeChild(node);
+                parent.removeChild(delegate);
             } catch (DOMException e) {
                 if (e.code != DOMException.NOT_FOUND_ERR) {
                     throw e;
@@ -85,16 +83,24 @@ public class SmartNode {
     }
 
     public SmartNodeList evaluateNodes(XPathExpression expression) throws XPathExpressionException {
-        if (node == null) {
+        if (delegate == null) {
             return new SmartNodeList();
         }
-        return new SmartNodeList(expression.evaluate(node, XPathConstants.NODESET));
+        return new SmartNodeList(expression.evaluate(delegate, XPathConstants.NODESET));
     }
 
     public SmartNode evaluateNode(XPathExpression expression) throws XPathExpressionException {
-        if (node == null) {
+        if (delegate == null) {
             return new SmartNode();
         }
-        return new SmartNode(expression.evaluate(node, XPathConstants.NODE));
+        return new SmartNode(expression.evaluate(delegate, XPathConstants.NODE));
+    }
+
+    public boolean exists() {
+        return delegate != null;
+    }
+
+    public SmartNode parent() {
+        return new SmartNode(delegate.getParentNode());
     }
 }

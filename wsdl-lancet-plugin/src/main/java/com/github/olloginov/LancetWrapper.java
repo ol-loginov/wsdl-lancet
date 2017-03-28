@@ -93,7 +93,7 @@ class LancetWrapper {
             }
 
             void resolveName(FilterNamedElement filterNamedElement) {
-                filterNamedElement.setName(XmlUtil.resolveQName(filterNamedElement.getName(), namespaceContextMap).toString());
+                filterNamedElement.setName(XmlUtil.fullQName(filterNamedElement.getName(), namespaceContextMap).toString());
             }
         });
 
