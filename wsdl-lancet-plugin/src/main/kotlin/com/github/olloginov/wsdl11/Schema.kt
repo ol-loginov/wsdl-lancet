@@ -36,7 +36,7 @@ internal open class NodeHolder(val node: SmartNode) : RefCountable() {
 internal class Service(
         node: SmartNode,
         val name: QName,
-        val ports: MutableList<ServicePort> = mutableListOf()
+        val ports: List<ServicePort> = emptyList()
 ) : NodeHolder(node)
 
 internal class ServicePort(
@@ -52,7 +52,7 @@ internal class BindingOperation(node: SmartNode) : NodeHolder(node)
 internal class PortType(
         node: SmartNode,
         val name: QName,
-        val operations: MutableList<PortTypeOperation> = mutableListOf()
+        val operations: List<PortTypeOperation> = emptyList()
 ) : NodeHolder(node)
 
 internal class PortTypeOperation(

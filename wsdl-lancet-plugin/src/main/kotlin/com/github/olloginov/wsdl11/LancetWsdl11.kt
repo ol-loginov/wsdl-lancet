@@ -34,37 +34,48 @@ class LancetWsdl11(
     override fun process(include: FilterTree, exclude: FilterTree) {
         val schema = Schema()
 
+
+        fun readPortTypeOperationMessage(operationNode: SmartNode, tagName: String): QName {
+            val messageNode = operationNode.evaluateNode(compile("./wsdl:$tagName"))
+            return messageNode.fullQName(messageNode.getAttributeOrEmpty("message"))
+        }
+
+        fun readPortTypeOperations(portTypeNode: SmartNode): List<PortTypeOperation> = portTypeNode
+                .evaluateNodes(compile("./wsdl:operation"))
+                .map { n ->
+                    PortTypeOperation(n,
+                            inputMessage = readPortTypeOperationMessage(n, "input"),
+                            outputMessage = readPortTypeOperationMessage(n, "output"))
+                }
+
         for (node in documentElement.evaluateNodes(compile("/wsdl:definitions/wsdl:portType"))) {
             val portType = PortType(node,
-                    name = nmtokenToQName(node.getAttributeOrEmpty("name")))
-            readPortTypeOperations(portType)
+                    name = nmtokenToQName(node.getAttributeOrEmpty("name")),
+                    operations = readPortTypeOperations(node))
             schema.portTypes.add(portType)
         }
 
+        for (node in documentElement.evaluateNodes(compile("/wsdl:definitions/wsdl:binding"))) {
+            val binding = Binding(node,
+                    name = nmtokenToQName(node.getAttributeOrEmpty("name")),
+                    ports = readServicePorts(node))
+            schema.services.add(service)
+        }
+
+        fun readServicePorts(serviceNode: SmartNode): List<ServicePort> = serviceNode
+                .evaluateNodes(compile("./wsdl:port"))
+                .map { it ->
+                    ServicePort(it,
+                            name = nmtokenToQName(it.getAttributeOrEmpty("name")),
+                            binding = it.fullQName(it.getAttributeOrEmpty("binding")))
+                }
+
         for (node in documentElement.evaluateNodes(compile("/wsdl:definitions/wsdl:service"))) {
             val service = Service(node,
-                    name = nmtokenToQName(node.getAttributeOrEmpty("name")))
-            readServicePorts(service)
+                    name = nmtokenToQName(node.getAttributeOrEmpty("name")),
+                    ports = readServicePorts(node))
             schema.services.add(service)
         }
     }
 
-    private fun readPortTypeOperations(portType: PortType) {
-        TODO("start here next time")
-        for (node in portType.node.evaluateNodes(compile("./wsdl:operation"))) {
-            val port = PortTypeOperation(node,
-                    inputMessage = node.fullQName(node.getAttributeOrEmpty("binding")),
-                    outputMessage = node.fullQName(node.getAttributeOrEmpty("binding")))
-            service.ports.add(port)
-        }
-    }
-
-    private fun readServicePorts(service: Service) {
-        for (node in service.node.evaluateNodes(compile("./wsdl:port"))) {
-            val port = ServicePort(node,
-                    name = nmtokenToQName(node.getAttributeOrEmpty("name")),
-                    binding = node.fullQName(node.getAttributeOrEmpty("binding")))
-            service.ports.add(port)
-        }
-    }
 }
