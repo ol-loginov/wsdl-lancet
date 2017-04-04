@@ -6,7 +6,9 @@ import javax.xml.namespace.QName
 
 internal class Schema(
         val services: MutableList<Service> = mutableListOf(),
-        val portTypes: MutableList<PortType> = mutableListOf()
+        val portTypes: MutableList<PortType> = mutableListOf(),
+        val bindings: MutableList<Binding> = mutableListOf(),
+        val messages: MutableList<Message> = mutableListOf()
 )
 
 internal class NMToken {}
@@ -20,44 +22,52 @@ internal open class RefCountable {
 
     fun removeRef() {
         refs -= 1
-
-        if (refs < 0) {
-            throw IllegalStateException("cannot go below zero!")
-        }
     }
 }
 
-internal open class NodeHolder(val node: SmartNode) : RefCountable() {
-    init {
-        addRef()
-    }
+internal open class NodeHolder(val node: SmartNode) : RefCountable()
+
+internal class Service(node: SmartNode,
+                       val name: QName,
+                       val ports: List<ServicePort> = emptyList()
+) : NodeHolder(node)
+
+internal class ServicePort(node: SmartNode,
+                           val name: QName,
+                           val binding: QName
+) : NodeHolder(node)
+
+internal class Binding(node: SmartNode,
+                       val name: QName,
+                       val type: QName,
+                       val operations: List<BindingOperation>
+) : NodeHolder(node)
+
+internal class BindingOperation(node: SmartNode,
+                                val name: String
+) : NodeHolder(node)
+
+internal class PortType(node: SmartNode,
+                        val name: QName,
+                        val operations: List<PortTypeOperation>
+) : NodeHolder(node)
+
+internal class PortTypeOperation(node: SmartNode,
+                                 val name: String,
+                                 val inputMessage: QName,
+                                 val outputMessage: QName,
+                                 val faultMessage: List<QName> = emptyList()
+) : NodeHolder(node)
+
+internal class Message(node: SmartNode,
+                       val name: QName,
+                       val parts: List<MessagePart>
+) : NodeHolder(node)
+
+internal class MessagePart(node: SmartNode,
+                           val element: QName
+) : NodeHolder(node)
+
+internal class SchemaType {node:SmartNode,
+    val
 }
-
-internal class Service(
-        node: SmartNode,
-        val name: QName,
-        val ports: List<ServicePort> = emptyList()
-) : NodeHolder(node)
-
-internal class ServicePort(
-        node: SmartNode,
-        val name: QName,
-        val binding: QName
-) : NodeHolder(node)
-
-internal class Binding(node: SmartNode) : NodeHolder(node)
-
-internal class BindingOperation(node: SmartNode) : NodeHolder(node)
-
-internal class PortType(
-        node: SmartNode,
-        val name: QName,
-        val operations: List<PortTypeOperation> = emptyList()
-) : NodeHolder(node)
-
-internal class PortTypeOperation(
-        node: SmartNode,
-        val inputMessage: QName,
-        val outputMessage: QName,
-        val faultMessage: List<QName> = emptyList()
-) : NodeHolder(node)

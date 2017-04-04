@@ -34,6 +34,16 @@ class LancetWsdl11(
     override fun process(include: FilterTree, exclude: FilterTree) {
         val schema = Schema()
 
+        fun readMessageParts(serviceNode: SmartNode): List<MessagePart> = serviceNode
+                .evaluateNodes(compile("./wsdl:part"))
+                .map { MessagePart(it, element = it.fullQName(it.getAttributeOrEmpty("element"))) }
+
+        for (node in documentElement.evaluateNodes(compile("/wsdl:definitions/wsdl:message"))) {
+            val message = Message(node,
+                    name = nmtokenToQName(node.getAttributeOrEmpty("name")),
+                    parts = readMessageParts(node))
+            schema.messages.add(message)
+        }
 
         fun readPortTypeOperationMessage(operationNode: SmartNode, tagName: String): QName {
             val messageNode = operationNode.evaluateNode(compile("./wsdl:$tagName"))
@@ -42,11 +52,7 @@ class LancetWsdl11(
 
         fun readPortTypeOperations(portTypeNode: SmartNode): List<PortTypeOperation> = portTypeNode
                 .evaluateNodes(compile("./wsdl:operation"))
-                .map { n ->
-                    PortTypeOperation(n,
-                            inputMessage = readPortTypeOperationMessage(n, "input"),
-                            outputMessage = readPortTypeOperationMessage(n, "output"))
-                }
+                .map { PortTypeOperation(it, name = it.getAttributeOrEmpty("name"), inputMessage = readPortTypeOperationMessage(it, "input"), outputMessage = readPortTypeOperationMessage(it, "output")) }
 
         for (node in documentElement.evaluateNodes(compile("/wsdl:definitions/wsdl:portType"))) {
             val portType = PortType(node,
@@ -55,20 +61,21 @@ class LancetWsdl11(
             schema.portTypes.add(portType)
         }
 
+        fun readBindingOperations(bindingNode: SmartNode): List<BindingOperation> = bindingNode
+                .evaluateNodes(compile("./wsdl:operation"))
+                .map { BindingOperation(it, name = it.getAttributeOrEmpty("name")) }
+
         for (node in documentElement.evaluateNodes(compile("/wsdl:definitions/wsdl:binding"))) {
             val binding = Binding(node,
                     name = nmtokenToQName(node.getAttributeOrEmpty("name")),
-                    ports = readServicePorts(node))
-            schema.services.add(service)
+                    type = node.fullQName(node.getAttributeOrEmpty("type")),
+                    operations = readBindingOperations(node))
+            schema.bindings.add(binding)
         }
 
         fun readServicePorts(serviceNode: SmartNode): List<ServicePort> = serviceNode
                 .evaluateNodes(compile("./wsdl:port"))
-                .map { it ->
-                    ServicePort(it,
-                            name = nmtokenToQName(it.getAttributeOrEmpty("name")),
-                            binding = it.fullQName(it.getAttributeOrEmpty("binding")))
-                }
+                .map { ServicePort(it, name = nmtokenToQName(it.getAttributeOrEmpty("name")), binding = it.fullQName(it.getAttributeOrEmpty("binding"))) }
 
         for (node in documentElement.evaluateNodes(compile("/wsdl:definitions/wsdl:service"))) {
             val service = Service(node,
@@ -76,6 +83,28 @@ class LancetWsdl11(
                     ports = readServicePorts(node))
             schema.services.add(service)
         }
-    }
 
+
+        // теперь маркируем кандидатов. елемент остается, если
+        // 1) его нет в excludes
+        // или
+        // 2) он есть в списке includes
+
+        schema.portTypes.forEach { portType ->
+            val portTypeInIncludes = include.portTypes.any { it.name == portType.name.toString() }
+            val portTypeInExcludes = exclude.portTypes.any { it.name == portType.name.toString() }
+
+            val decision = when {
+                portTypeInExcludes && portTypeInIncludes -> Decision.DEFAULT
+                portTypeInExcludes && !portTypeInIncludes -> Decision.DEFAULT
+                else -> TODO("very unlikely use case")
+            }
+        }
+    }
+}
+
+private enum class Decision {
+    DEFAULT,
+    KEEP,
+    REMOVE;
 }

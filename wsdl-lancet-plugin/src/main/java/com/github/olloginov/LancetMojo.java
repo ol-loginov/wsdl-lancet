@@ -25,7 +25,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-@Mojo(name = "process", defaultPhase = LifecyclePhase.GENERATE_RESOURCES)
+@Mojo(name = "lancet", defaultPhase = LifecyclePhase.GENERATE_RESOURCES)
 public class LancetMojo extends AbstractMojo {
     /**
      * Files rules.

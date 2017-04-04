@@ -16,7 +16,7 @@ public class FilterTree {
     @Parameter
     private FilterPortType[] portTypes = new FilterPortType[0];
 
-    void visit(FilterVisitor visitor) {
+    public void visit(FilterVisitor visitor) {
         for (FilterPortType portType : safeList(portTypes)) {
             portType.visit(visitor);
         }
