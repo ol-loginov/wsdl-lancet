@@ -4,6 +4,7 @@ import org.apache.maven.plugin.logging.SystemStreamLog;
 import org.junit.Test;
 
 import java.io.*;
+import java.util.Collections;
 import java.util.TreeMap;
 
 import static org.junit.Assert.assertEquals;
@@ -22,18 +23,12 @@ public class WsdlLancetTest {
                 new TreeMap<String, String>() {{
                     put("tais", "http://www.tais.ru/");
                 }},
-                new FilterTree(
-                        arrayOf(
-                                new FilterPortType(
-                                        "tais:TAISSoapPort",
-                                        arrayOf(
-                                                new FilterName("tais:GetOptimalFares")
-                                        )
-                                )
-                        )
-                ),
-                new FilterTree()
-        );
+
+                new WsdlSlice(Collections.singletonList(
+                        new WsdlPortType("tais:TAISSoapPort", Collections.singletonList(
+                                new WsdlPortTypeOperation("GetOptimalFares")
+                        ))
+                )));
 
         LancetWrapper lancet = new LancetWrapper(new SystemStreamLog());
         lancet.process(new LancetConfiguration[]{configuration});

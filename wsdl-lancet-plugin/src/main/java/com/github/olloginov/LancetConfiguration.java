@@ -20,7 +20,5 @@ public class LancetConfiguration {
     @Parameter
     private Map<String, String> namespaces = new HashMap<>();
     @Parameter
-    private FilterTree include = new FilterTree();
-    @Parameter
-    private FilterTree exclude = new FilterTree();
+    private WsdlSlice include = new WsdlSlice();
 }

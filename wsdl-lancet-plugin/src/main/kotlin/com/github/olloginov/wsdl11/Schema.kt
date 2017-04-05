@@ -49,8 +49,19 @@ internal class BindingOperation(node: SmartNode,
 
 internal class PortType(node: SmartNode,
                         val name: QName,
-                        val operations: List<PortTypeOperation>
-) : NodeHolder(node)
+                        var operations: List<PortTypeOperation>
+) : NodeHolder(node) {
+    fun removeOperations(filter: (PortTypeOperation) -> Boolean): List<PortTypeOperation> {
+        val deletable = this.operations.filter(filter)
+
+        val operations = this.operations.toMutableList()
+        operations.removeAll(deletable)
+
+        this.operations = operations
+
+        return deletable
+    }
+}
 
 internal class PortTypeOperation(node: SmartNode,
                                  val name: String,
@@ -67,7 +78,3 @@ internal class Message(node: SmartNode,
 internal class MessagePart(node: SmartNode,
                            val element: QName
 ) : NodeHolder(node)
-
-internal class SchemaType {node:SmartNode,
-    val
-}

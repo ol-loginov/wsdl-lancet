@@ -1,7 +1,8 @@
 package com.github.olloginov.wsdl11
 
-import com.github.olloginov.FilterTree
 import com.github.olloginov.Lancet
+import com.github.olloginov.WsdlFilter
+import com.github.olloginov.WsdlFilterDecision
 import com.github.olloginov.support.NamespaceContextMap
 import com.github.olloginov.support.SmartNode
 import org.w3c.dom.Document
@@ -10,17 +11,19 @@ import javax.xml.xpath.XPathExpression
 import javax.xml.xpath.XPathFactory
 
 class LancetWsdl11(
-        private val document: Document
+        document: Document
 ) : Lancet {
     private val documentElement = SmartNode(document.documentElement)
     private val xPath = XPathFactory.newInstance().newXPath()
     private val targetNamespace = documentElement.getAttributeOrEmpty("targetNamespace")
+    private val schema = Schema()
 
     init {
         xPath.namespaceContext = NamespaceContextMap(
                 "wsdl", "http://schemas.xmlsoap.org/wsdl/")
     }
 
+    private val unusedMessages = mutableSetOf<QName>()
 
     private fun compile(expression: String): XPathExpression = xPath.compile(expression)
 
@@ -31,9 +34,7 @@ class LancetWsdl11(
         return QName(targetNamespace, localName)
     }
 
-    override fun process(include: FilterTree, exclude: FilterTree) {
-        val schema = Schema()
-
+    override fun process(include: WsdlFilter) {
         fun readMessageParts(serviceNode: SmartNode): List<MessagePart> = serviceNode
                 .evaluateNodes(compile("./wsdl:part"))
                 .map { MessagePart(it, element = it.fullQName(it.getAttributeOrEmpty("element"))) }
@@ -43,6 +44,7 @@ class LancetWsdl11(
                     name = nmtokenToQName(node.getAttributeOrEmpty("name")),
                     parts = readMessageParts(node))
             schema.messages.add(message)
+            unusedMessages += message.name
         }
 
         fun readPortTypeOperationMessage(operationNode: SmartNode, tagName: String): QName {
@@ -91,20 +93,25 @@ class LancetWsdl11(
         // 2) он есть в списке includes
 
         schema.portTypes.forEach { portType ->
-            val portTypeInIncludes = include.portTypes.any { it.name == portType.name.toString() }
-            val portTypeInExcludes = exclude.portTypes.any { it.name == portType.name.toString() }
+            val deletables = portType.removeOperations { include.needPortTypeOperation(portType.name, it.name) != WsdlFilterDecision.KEEP }
+            for (deletable in deletables) {
+                deletePortTypeOperation(portType, deletable)
+            }
 
-            val decision = when {
-                portTypeInExcludes && portTypeInIncludes -> Decision.DEFAULT
-                portTypeInExcludes && !portTypeInIncludes -> Decision.DEFAULT
-                else -> TODO("very unlikely use case")
+            if (portType.operations.isEmpty()) {
+                deletePortType(portType)
             }
         }
     }
-}
 
-private enum class Decision {
-    DEFAULT,
-    KEEP,
-    REMOVE;
+    private fun deletePortType(portType: PortType) {
+        for (deletable in portType.removeOperations { true }) {
+            deletePortTypeOperation(portType, deletable)
+        }
+        portType.node.remove()
+    }
+
+    private fun deletePortTypeOperation(portType: PortType, portTypeOperation: PortTypeOperation) {
+        portTypeOperation.node.remove()
+    }
 }

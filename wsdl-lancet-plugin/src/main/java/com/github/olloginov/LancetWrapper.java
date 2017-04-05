@@ -4,6 +4,7 @@ import com.github.olloginov.support.NamespaceContextMap;
 import com.github.olloginov.support.XmlUtil;
 import com.github.olloginov.wsdl11.LancetWsdl11;
 import org.apache.maven.plugin.logging.Log;
+import org.jetbrains.annotations.NotNull;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
@@ -53,7 +54,7 @@ class LancetWrapper {
         return element;
     }
 
-    private void process(LancetConfiguration setup) throws IOException, URISyntaxException {
+    private void process(final LancetConfiguration setup) throws IOException, URISyntaxException {
         File source = requireArgument(setup.getSource(), "parameter 'source' is not set");
         if (!source.exists()) {
             throw new IllegalArgumentException("source file '" + setup.getSource() + "' is not set");
@@ -81,24 +82,25 @@ class LancetWrapper {
         log.info("process " + source);
 
         final NamespaceContextMap namespaceContextMap = new NamespaceContextMap(setup.getNamespaces());
-        setup.getInclude().visit(new FilterVisitor() {
-            @Override
-            public void onFilterPortType(FilterPortType filterPortType) {
-                resolveName(filterPortType);
-            }
 
-            @Override
-            public void onFilterName(FilterName filterName) {
-                resolveName(filterName);
-            }
+        for (WsdlPortType wsdlPortType : setup.getInclude().getPortTypes()) {
+            wsdlPortType.setName(XmlUtil.fullQName(wsdlPortType.getName(), namespaceContextMap).toString());
+        }
 
-            void resolveName(FilterNamedElement filterNamedElement) {
-                filterNamedElement.setName(XmlUtil.fullQName(filterNamedElement.getName(), namespaceContextMap).toString());
+        lancet.process(new WsdlFilter() {
+            @NotNull
+            @Override
+            public WsdlFilterDecision needPortTypeOperation(@NotNull QName portType, @NotNull String operation) {
+                for (WsdlPortType pt : setup.getInclude().getPortTypes()) {
+                    for (WsdlPortTypeOperation pto : pt.getOperations()) {
+                        if (pto.getName().equals(operation) && portType.toString().equals(pt.getName())) {
+                            return WsdlFilterDecision.KEEP;
+                        }
+                    }
+                }
+                return WsdlFilterDecision.SKIP;
             }
         });
-
-
-        lancet.process(setup.getInclude(), setup.getExclude());
 
         log.info("write " + target);
         saveWsdl(dom, target);
