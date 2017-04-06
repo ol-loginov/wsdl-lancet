@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions targetNamespace="http://www.tais.ru/"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+                  xmlns:tns="http://www.tais.ru/"
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <wsdl:types>
+        <xs:schema elementFormDefault="qualified" targetNamespace="http://www.tais.ru/">
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:binding name="TAISSoapBinding" type="tns:TAISSoapPort">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="Cancel">
+            <soap:operation soapAction="urn:#Cancel"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="Void">
+            <soap:operation soapAction="urn:#Void"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="AddPNRComment">
+            <soap:operation soapAction="urn:#AddPNRComment"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="LoadPNR">
+            <soap:operation soapAction="urn:#LoadPNR"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="CalculatePricing">
+            <soap:operation soapAction="urn:#CalculatePricing"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="RevalidateAsync">
+            <soap:operation soapAction="urn:#RevalidateAsync"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="UpdatePaymentData">
+            <soap:operation soapAction="urn:#UpdatePaymentData"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetPaymentParams">
+            <soap:operation soapAction="urn:#GetPaymentParams"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="LogEvent">
+            <soap:operation soapAction="urn:#LogEvent"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="StartSession">
+            <soap:operation soapAction="urn:#StartSession"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="EndSession">
+            <soap:operation soapAction="urn:#EndSession"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetOptimalFares">
+            <soap:operation soapAction="urn:#GetOptimalFares"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetOrderServices">
+            <soap:operation soapAction="urn:#GetOrderServices"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetMinFares">
+            <soap:operation soapAction="urn:#GetMinFares"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetAvailability">
+            <soap:operation soapAction="urn:#GetAvailability"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SelectOffer">
+            <soap:operation soapAction="urn:#SelectOffer"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="AddUser">
+            <soap:operation soapAction="urn:#AddUser"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetUserProperties">
+            <soap:operation soapAction="urn:#GetUserProperties"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SetUserProperties">
+            <soap:operation soapAction="urn:#SetUserProperties"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="CreateOrder">
+            <soap:operation soapAction="urn:#CreateOrder"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="UpdateOrder">
+            <soap:operation soapAction="urn:#UpdateOrder"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="AddOrderService">
+            <soap:operation soapAction="urn:#AddOrderService"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="AddOrderItem">
+            <soap:operation soapAction="urn:#AddOrderItem"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetOrderPayMethods">
+            <soap:operation soapAction="urn:#GetOrderPayMethods"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SetOrderPayMethod">
+            <soap:operation soapAction="urn:#SetOrderPayMethod"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="Book">
+            <soap:operation soapAction="urn:#Book"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="StartPayment">
+            <soap:operation soapAction="urn:#StartPayment"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="Refund">
+            <soap:operation soapAction="urn:#Refund"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="Ticket">
+            <soap:operation soapAction="urn:#Ticket"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetAirlineCities">
+            <soap:operation soapAction="urn:#GetAirlineCities"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetOrderList">
+            <soap:operation soapAction="urn:#GetOrderList"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetStatistics">
+            <soap:operation soapAction="urn:#GetStatistics"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetFareRules">
+            <soap:operation soapAction="urn:#GetFareRules"/>
+            <wsdl:input>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://www.tais.ru/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="TAIS">
+        <wsdl:port binding="tns:TAISSoapBinding" name="TAISSoapPort">
+            <soap:address location="http://search.biletix.ru/bitrix/components/travelshop/ibe.soap/travelshop_booking.php"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

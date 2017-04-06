@@ -4,11 +4,12 @@ import com.github.olloginov.support.SmartNode
 import javax.xml.namespace.QName
 
 
-internal class Schema(
+internal class Wsdl(
         val services: MutableList<Service> = mutableListOf(),
         val portTypes: MutableList<PortType> = mutableListOf(),
         val bindings: MutableList<Binding> = mutableListOf(),
-        val messages: MutableList<Message> = mutableListOf()
+        val messages: MutableList<Message> = mutableListOf(),
+        val schemas: MutableList<Schema> = mutableListOf()
 )
 
 internal class NMToken {}
@@ -26,6 +27,23 @@ internal open class RefCountable {
 }
 
 internal open class NodeHolder(val node: SmartNode) : RefCountable()
+
+
+internal class Schema(node: SmartNode,
+                      val elements: MutableList<SchemaElement>,
+                      val types: MutableList<SchemaType>,
+                      val referenceCount: MutableMap<QName, Int>
+) : NodeHolder(node)
+
+internal class SchemaElement(node: SmartNode,
+                             val type: QName,
+                             val references: List<QName>
+) : NodeHolder(node)
+
+internal class SchemaType(node: SmartNode,
+                          val type: QName,
+                          val references: List<QName>
+) : NodeHolder(node)
 
 internal class Service(node: SmartNode,
                        val name: QName,
@@ -49,19 +67,8 @@ internal class BindingOperation(node: SmartNode,
 
 internal class PortType(node: SmartNode,
                         val name: QName,
-                        var operations: List<PortTypeOperation>
-) : NodeHolder(node) {
-    fun removeOperations(filter: (PortTypeOperation) -> Boolean): List<PortTypeOperation> {
-        val deletable = this.operations.filter(filter)
-
-        val operations = this.operations.toMutableList()
-        operations.removeAll(deletable)
-
-        this.operations = operations
-
-        return deletable
-    }
-}
+                        val operations: MutableList<PortTypeOperation>
+) : NodeHolder(node)
 
 internal class PortTypeOperation(node: SmartNode,
                                  val name: String,

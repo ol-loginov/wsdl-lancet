@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  targetNamespace="http://www.tais.ru/">
+    <wsdl:types>
+        <xs:schema targetNamespace="http://www.tais.ru/" elementFormDefault="qualified">
+            <xs:complexType name="ArrayOf_soapenc_string">
+                <xs:complexContent>
+                    <xs:restriction base="soapenc:Array">
+                        <xs:attribute ref="soapenc:arrayType" wsdl:arrayType="soapenc:string[]"/>
+                    </xs:restriction>
+                </xs:complexContent>
+            </xs:complexType>
+            <xs:complexType name="CIBESOAPError">
+                <xs:sequence>
+                    <xs:element name="code" type="xs:string"/>
+                    <xs:element name="description" type="xs:string"/>
+                    <xs:element name="data" type="soapenc:Struct" minOccurs="0"/>
+                    <xs:element name="stack" type="xs:string" minOccurs="0"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="CommonParameters">
+                <xs:sequence>
+                    <xs:element name="session_token" type="xs:string"/>
+                    <xs:element name="hash" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+    </wsdl:types>
+</wsdl:definitions>
