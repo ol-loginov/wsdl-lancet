@@ -24,7 +24,6 @@ class LancetWsdl11(
                 "xs", "http://www.w3.org/2001/XMLSchema")
     }
 
-    private val unusedMessages = mutableSetOf<QName>()
 
     private fun compile(expression: String): XPathExpression = xPath.compile(expression)
 
@@ -77,24 +76,27 @@ class LancetWsdl11(
         } while (deleted > 0)
     }
 
+    private fun releaseTypeReference(schema: Schema, it: QName) {
+        val count = schema.referenceCount[it]
+        if (count != null) {
+            if (count == 1) {
+                schema.referenceCount.remove(it)
+            } else {
+                schema.referenceCount.put(it, count - 1)
+            }
+        }
+    }
+
     private fun deleteSchemaType(schema: Schema, it: SchemaType) {
         if (schema.types.remove(it)) {
-            it.references.forEach { name ->
-                if (schema.referenceCount.containsKey(name)) {
-                    schema.referenceCount.put(name, schema.referenceCount.get(name)!! - 1)
-                }
-            }
+            it.references.forEach { name -> releaseTypeReference(schema, name) }
             it.node.remove()
         }
     }
 
     private fun deleteSchemaElement(schema: Schema, it: SchemaElement) {
         if (schema.elements.remove(it)) {
-            it.references.forEach { name ->
-                if (schema.referenceCount.containsKey(name)) {
-                    schema.referenceCount.put(name, schema.referenceCount.get(name)!! - 1)
-                }
-            }
+            it.references.forEach { name -> releaseTypeReference(schema, name) }
             it.node.remove()
         }
     }
@@ -131,18 +133,19 @@ class LancetWsdl11(
 
             val schemaTypesReferences = schemaTypes
                     .flatMap { it.references }
-                    .groupingBy { it }
-                    .eachCount()
 
             val schemaElementsReferences = schemaElements
                     .flatMap { it.references }
+
+            val totalTypeReferences = (schemaTypesReferences + schemaElementsReferences)
                     .groupingBy { it }
                     .eachCount()
+                    .toMutableMap()
 
             wsdl.schemas.add(Schema(schemaNode,
                     schemaElements,
                     schemaTypes,
-                    (schemaTypesReferences + schemaElementsReferences).toMutableMap()))
+                    totalTypeReferences))
         }
     }
 
@@ -177,11 +180,9 @@ class LancetWsdl11(
                 .map { MessagePart(it, element = it.fullQName(it.getAttributeOrEmpty("element"))) }
 
         for (node in documentElement.evaluateNodes(compile("/wsdl:definitions/wsdl:message"))) {
-            val message = Message(node,
+            wsdl.messages.add(Message(node,
                     name = nmtokenToQName(node.getAttributeOrEmpty("name")),
-                    parts = readMessageParts(node))
-            wsdl.messages.add(message)
-            unusedMessages += message.name
+                    parts = readMessageParts(node)))
         }
 
         fun readPortTypeOperationMessage(operationNode: SmartNode, tagName: String): QName {
@@ -221,6 +222,13 @@ class LancetWsdl11(
 
         portTypeOperation.node.remove()
         portType.operations.remove(portTypeOperation)
+
+        val bindingsToDelete = wsdl.bindings
+                .filter { it.type == portType.name }
+                .forEach {
+                    val operations = it.operations }
+                .filter { it.name == portTypeOperation.name }
+
     }
 
     private fun deleteMessage(message: Message) {
