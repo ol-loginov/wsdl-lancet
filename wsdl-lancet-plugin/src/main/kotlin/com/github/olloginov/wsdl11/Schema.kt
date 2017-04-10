@@ -7,7 +7,7 @@ import javax.xml.namespace.QName
 internal class Wsdl(
         val services: MutableList<Service> = mutableListOf(),
         val portTypes: MutableList<PortType> = mutableListOf(),
-        val bindings: MutableList<Binding> = mutableListOf(),
+        val bindings: MutableMap<QName, Binding> = mutableMapOf(),
         val messages: MutableList<Message> = mutableListOf(),
         val schemas: MutableList<Schema> = mutableListOf()
 )
@@ -47,7 +47,7 @@ internal class SchemaType(node: SmartNode,
 
 internal class Service(node: SmartNode,
                        val name: QName,
-                       val ports: List<ServicePort> = emptyList()
+                       val ports: MutableList<ServicePort> = mutableListOf()
 ) : NodeHolder(node)
 
 internal class ServicePort(node: SmartNode,
@@ -58,7 +58,7 @@ internal class ServicePort(node: SmartNode,
 internal class Binding(node: SmartNode,
                        val name: QName,
                        val type: QName,
-                       val operations: List<BindingOperation>
+                       val operations: MutableMap<String, BindingOperation>
 ) : NodeHolder(node)
 
 internal class BindingOperation(node: SmartNode,

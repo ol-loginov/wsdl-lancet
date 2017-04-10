@@ -57,6 +57,29 @@ public class WsdlLancetTest {
     }
 
     @Test
+    public void processBiletix2() throws Exception {
+        processFile(
+                new TreeMap<String, String>() {{
+                    put("tais", "http://www.tais.ru/");
+                }},
+                new WsdlSlice(Collections.singletonList(
+                        new WsdlPortType("tais:TAISSoapPort", Collections.singletonList(
+                                new WsdlPortTypeOperation("GetOptimalFares")
+                        ))
+                )),
+                "/biletix2-source.wsdl", "/biletix2-target-00.wsdl");
+
+        processFile(
+                new TreeMap<String, String>() {{
+                    put("tais", "http://www.tais.ru/");
+                }},
+                new WsdlSlice(Collections.singletonList(
+                        new WsdlPortType("tais:TAISSoapPort2", Collections.<WsdlPortTypeOperation>emptyList())
+                )),
+                "/biletix2-source.wsdl", "/biletix2-target-01.wsdl");
+    }
+
+    @Test
     public void processSmallStrings() throws Exception {
         processFile(
                 new TreeMap<String, String>(),

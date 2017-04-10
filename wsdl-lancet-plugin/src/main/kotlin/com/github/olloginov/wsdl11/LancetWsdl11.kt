@@ -150,21 +150,24 @@ class LancetWsdl11(
     }
 
     private fun readServices() {
-        fun readBindingOperations(bindingNode: SmartNode): List<BindingOperation> = bindingNode
+        fun readBindingOperations(bindingNode: SmartNode) = bindingNode
                 .evaluateNodes(compile("./wsdl:operation"))
                 .map { BindingOperation(it, name = it.getAttributeOrEmpty("name")) }
+                .map { it.name to it }
+                .toMap().toMutableMap()
 
         for (node in documentElement.evaluateNodes(compile("/wsdl:definitions/wsdl:binding"))) {
             val binding = Binding(node,
                     name = nmtokenToQName(node.getAttributeOrEmpty("name")),
                     type = node.fullQName(node.getAttributeOrEmpty("type")),
                     operations = readBindingOperations(node))
-            wsdl.bindings.add(binding)
+            wsdl.bindings[binding.name] = binding
         }
 
-        fun readServicePorts(serviceNode: SmartNode): List<ServicePort> = serviceNode
+        fun readServicePorts(serviceNode: SmartNode) = serviceNode
                 .evaluateNodes(compile("./wsdl:port"))
                 .map { ServicePort(it, name = nmtokenToQName(it.getAttributeOrEmpty("name")), binding = it.fullQName(it.getAttributeOrEmpty("binding"))) }
+                .toMutableList()
 
         for (node in documentElement.evaluateNodes(compile("/wsdl:definitions/wsdl:service"))) {
             val service = Service(node,
@@ -175,7 +178,7 @@ class LancetWsdl11(
     }
 
     private fun readPortTypes() {
-        fun readMessageParts(serviceNode: SmartNode): List<MessagePart> = serviceNode
+        fun readMessageParts(serviceNode: SmartNode) = serviceNode
                 .evaluateNodes(compile("./wsdl:part"))
                 .map { MessagePart(it, element = it.fullQName(it.getAttributeOrEmpty("element"))) }
 
@@ -206,6 +209,20 @@ class LancetWsdl11(
         portType.operations.asSequence()
                 .forEach { deletePortTypeOperation(portType, it) }
         portType.node.remove()
+
+        wsdl.bindings.filterValues { it.type == portType.name }
+                .map { it.value }
+                .onEach { it.node.remove() }
+                .onEach { wsdl.bindings.remove(it.name) }
+                .onEach { binding ->
+                    wsdl.services.forEach { service ->
+                        service.ports
+                                .filter { servicePort -> servicePort.binding == binding.name }
+                                .onEach { servicePort ->
+                                    servicePort.node.remove()
+                                    service.ports.remove(servicePort) }
+                    }
+                }
     }
 
     private fun deletePortTypeOperation(portType: PortType, portTypeOperation: PortTypeOperation) {
@@ -223,12 +240,14 @@ class LancetWsdl11(
         portTypeOperation.node.remove()
         portType.operations.remove(portTypeOperation)
 
-        val bindingsToDelete = wsdl.bindings
-                .filter { it.type == portType.name }
+        wsdl.bindings
+                .filterValues { it.type == portType.name }
                 .forEach {
-                    val operations = it.operations }
-                .filter { it.name == portTypeOperation.name }
-
+                    val bindingOperation = it.value.operations.remove(portTypeOperation.name)
+                    if (bindingOperation != null) {
+                        bindingOperation.node.remove()
+                    }
+                }
     }
 
     private fun deleteMessage(message: Message) {

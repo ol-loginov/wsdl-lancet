@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:tns="http://www.tais.ru/" targetNamespace="http://www.tais.ru/">
+    <wsdl:portType name="TAISSoapPort2">
+        <wsdl:operation name="Cancel">
+            <wsdl:input message="tns:Cancel"/>
+            <wsdl:output message="tns:CancelResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:service name="TAIS">
+        <wsdl:port name="TAISSoapPort" binding="tns:TAISSoapBinding">
+            <soap:address location="http://search.biletix.ru/bitrix/components/travelshop/ibe.soap/travelshop_booking.php"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

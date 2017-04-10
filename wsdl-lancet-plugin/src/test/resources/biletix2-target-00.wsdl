@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <wsdl:definitions targetNamespace="http://www.tais.ru/"
-                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
-                  xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
-                  xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
-                  xmlns:tns="http://www.tais.ru/"
-                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+    xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+    xmlns:tns="http://www.tais.ru/"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <wsdl:types>
         <xs:schema elementFormDefault="qualified" targetNamespace="http://www.tais.ru/">
             <xs:complexType name="CIBESOAPError">
@@ -33,7 +33,7 @@
             <xs:complexType name="ArrayOfAirStop">
                 <xs:sequence>
                     <xs:element maxOccurs="unbounded" minOccurs="0"
-                                name="AirStop" nillable="true" type="tns:AirStop"/>
+                        name="AirStop" nillable="true" type="tns:AirStop"/>
                 </xs:sequence>
             </xs:complexType>
             <xs:complexType name="AirSegment">
@@ -48,13 +48,13 @@
                     <xs:element minOccurs="0" name="departure_city_code" type="xs:string"/>
                     <xs:element minOccurs="0" name="arrival_city_code" type="xs:string"/>
                     <xs:element minOccurs="0"
-                                name="departure_city_full_name" type="xs:string"/>
+                        name="departure_city_full_name" type="xs:string"/>
                     <xs:element minOccurs="0"
-                                name="arrival_city_full_name" type="xs:string"/>
+                        name="arrival_city_full_name" type="xs:string"/>
                     <xs:element minOccurs="0"
-                                name="departure_airport_full_name" type="xs:string"/>
+                        name="departure_airport_full_name" type="xs:string"/>
                     <xs:element minOccurs="0"
-                                name="arrival_airport_full_name" type="xs:string"/>
+                        name="arrival_airport_full_name" type="xs:string"/>
                     <xs:element name="departure_time" type="xs:string"/>
                     <xs:element name="arrival_time" type="xs:string"/>
                     <xs:element name="departure_airport_code" type="xs:string"/>
@@ -77,7 +77,7 @@
             <xs:complexType name="ArrayOfAirSegment">
                 <xs:sequence>
                     <xs:element maxOccurs="unbounded" minOccurs="0"
-                                name="AirSegment" nillable="true" type="tns:AirSegment"/>
+                        name="AirSegment" nillable="true" type="tns:AirSegment"/>
                 </xs:sequence>
             </xs:complexType>
             <xs:complexType name="ProductFare">
@@ -106,13 +106,13 @@
             <xs:complexType name="ArrayOfProductFare">
                 <xs:sequence>
                     <xs:element maxOccurs="unbounded" minOccurs="0"
-                                name="ProductFare" nillable="true" type="tns:ProductFare"/>
+                        name="ProductFare" nillable="true" type="tns:ProductFare"/>
                 </xs:sequence>
             </xs:complexType>
             <xs:complexType name="ArrayOfSmallProductFare">
                 <xs:sequence>
                     <xs:element maxOccurs="unbounded" minOccurs="0"
-                                name="SmallProductFare" nillable="true" type="tns:SmallProductFare"/>
+                        name="SmallProductFare" nillable="true" type="tns:SmallProductFare"/>
                 </xs:sequence>
             </xs:complexType>
             <xs:complexType name="Product">
@@ -135,13 +135,13 @@
             <xs:complexType name="ArrayOfProduct">
                 <xs:sequence>
                     <xs:element maxOccurs="unbounded" minOccurs="0"
-                                name="Product" nillable="true" type="tns:Product"/>
+                        name="Product" nillable="true" type="tns:Product"/>
                 </xs:sequence>
             </xs:complexType>
             <xs:complexType name="ArrayOfSmallProduct">
                 <xs:sequence>
                     <xs:element maxOccurs="unbounded" minOccurs="0"
-                                name="SmallProduct" nillable="true" type="tns:SmallProduct"/>
+                        name="SmallProduct" nillable="true" type="tns:SmallProduct"/>
                 </xs:sequence>
             </xs:complexType>
             <xs:complexType name="GetOptimalFaresRoute">
@@ -155,7 +155,7 @@
             <xs:complexType name="ArrayOfGetOptimalFaresRoute">
                 <xs:sequence>
                     <xs:element maxOccurs="unbounded" minOccurs="0"
-                                name="GetOptimalFaresRoute" nillable="true" type="tns:GetOptimalFaresRoute"/>
+                        name="GetOptimalFaresRoute" nillable="true" type="tns:GetOptimalFaresRoute"/>
                 </xs:sequence>
             </xs:complexType>
             <xs:complexType name="CommonSearchParameters">
@@ -165,25 +165,25 @@
                             <xs:element name="owrt" type="xs:string"/>
                             <xs:element minOccurs="0" name="routes" type="tns:ArrayOfGetOptimalFaresRoute"/>
                             <xs:element minOccurs="0"
-                                        name="departure_point" type="xs:string"/>
+                                name="departure_point" type="xs:string"/>
                             <xs:element minOccurs="0"
-                                        name="arrival_point" type="xs:string"/>
+                                name="arrival_point" type="xs:string"/>
                             <xs:element minOccurs="0"
-                                        name="outbound_date" type="xs:string"/>
+                                name="outbound_date" type="xs:string"/>
                             <xs:element minOccurs="0"
-                                        name="outbound_time_range" type="xs:string"/>
+                                name="outbound_time_range" type="xs:string"/>
                             <xs:element minOccurs="0" name="return_date" type="xs:string"/>
                             <xs:element minOccurs="0"
-                                        name="return_time_range" type="xs:string"/>
+                                name="return_time_range" type="xs:string"/>
                             <xs:element name="adult_count" type="xs:string"/>
                             <xs:element minOccurs="0" name="child_count" type="xs:string"/>
                             <xs:element minOccurs="0"
-                                        name="infant_count" type="xs:string"/>
+                                name="infant_count" type="xs:string"/>
                             <xs:element minOccurs="0" name="class" type="xs:string"/>
                             <xs:element minOccurs="0" name="direct_only" type="xs:string"/>
                             <xs:element minOccurs="0" name="promocode" type="xs:string"/>
                             <xs:element minOccurs="0"
-                                        name="return_full_names" type="xs:string"/>
+                                name="return_full_names" type="xs:string"/>
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>
@@ -194,11 +194,11 @@
                         <xs:extension base="tns:CommonSearchParameters">
                             <xs:sequence>
                                 <xs:element minOccurs="0"
-                                            name="date_range" type="xs:string"/>
+                                    name="date_range" type="xs:string"/>
                                 <xs:element minOccurs="0"
-                                            name="price_range" type="xs:string"/>
+                                    name="price_range" type="xs:string"/>
                                 <xs:element minOccurs="0"
-                                            name="cache_usage" type="xs:string"/>
+                                    name="cache_usage" type="xs:string"/>
                             </xs:sequence>
                         </xs:extension>
                     </xs:complexContent>
@@ -215,8 +215,8 @@
             <xs:complexType name="ArrayOfGetOptimalFaresLinkedFlightID">
                 <xs:sequence>
                     <xs:element maxOccurs="unbounded" minOccurs="0"
-                                name="GetOptimalFaresLinkedFlightID"
-                                nillable="true" type="tns:GetOptimalFaresLinkedFlightID"/>
+                        name="GetOptimalFaresLinkedFlightID"
+                        nillable="true" type="tns:GetOptimalFaresLinkedFlightID"/>
                 </xs:sequence>
             </xs:complexType>
             <xs:complexType name="GetOptimalFaresFlight">
@@ -227,16 +227,16 @@
                     <xs:element name="stops" type="xs:string"/>
                     <xs:element name="link" type="xs:string"/>
                     <xs:element minOccurs="0" name="flight_id"
-                                nillable="true" type="xs:string"/>
+                        nillable="true" type="xs:string"/>
                     <xs:element minOccurs="0" name="linked_flight_ids"
-                                nillable="true" type="tns:ArrayOfGetOptimalFaresLinkedFlightID"/>
+                        nillable="true" type="tns:ArrayOfGetOptimalFaresLinkedFlightID"/>
                     <xs:element name="segments" type="tns:ArrayOfAirSegment"/>
                 </xs:sequence>
             </xs:complexType>
             <xs:complexType name="ArrayOfGetOptimalFaresFlight">
                 <xs:sequence>
                     <xs:element maxOccurs="unbounded" minOccurs="0"
-                                name="GetOptimalFaresFlight" nillable="true" type="tns:GetOptimalFaresFlight"/>
+                        name="GetOptimalFaresFlight" nillable="true" type="tns:GetOptimalFaresFlight"/>
                 </xs:sequence>
             </xs:complexType>
             <xs:complexType name="GetOptimalFaresLinkedFareID">
@@ -247,8 +247,8 @@
             <xs:complexType name="ArrayOfGetOptimalFaresLinkedFareID">
                 <xs:sequence>
                     <xs:element maxOccurs="unbounded" minOccurs="0"
-                                name="GetOptimalFaresLinkedFareID"
-                                nillable="true" type="tns:GetOptimalFaresLinkedFareID"/>
+                        name="GetOptimalFaresLinkedFareID"
+                        nillable="true" type="tns:GetOptimalFaresLinkedFareID"/>
                 </xs:sequence>
             </xs:complexType>
             <xs:complexType name="GetOptimalFaresDirection">
@@ -261,7 +261,7 @@
             <xs:complexType name="ArrayOfGetOptimalFaresDirection">
                 <xs:sequence>
                     <xs:element maxOccurs="unbounded" minOccurs="0"
-                                name="GetOptimalFaresDirection" nillable="true" type="tns:GetOptimalFaresDirection"/>
+                        name="GetOptimalFaresDirection" nillable="true" type="tns:GetOptimalFaresDirection"/>
                 </xs:sequence>
             </xs:complexType>
             <xs:complexType name="GetOptimalFaresOffer">
@@ -277,16 +277,16 @@
                     <xs:element name="timelimit" type="xs:string"/>
                     <xs:element name="link" type="xs:string"/>
                     <xs:element minOccurs="0" name="fare_id"
-                                nillable="true" type="xs:string"/>
+                        nillable="true" type="xs:string"/>
                     <xs:element minOccurs="0" name="linked_fare_ids"
-                                nillable="true" type="tns:ArrayOfGetOptimalFaresLinkedFareID"/>
+                        nillable="true" type="tns:ArrayOfGetOptimalFaresLinkedFareID"/>
                     <xs:element name="directions" type="tns:ArrayOfGetOptimalFaresDirection"/>
                 </xs:sequence>
             </xs:complexType>
             <xs:complexType name="ArrayOfGetOptimalFaresOffer">
                 <xs:sequence>
                     <xs:element maxOccurs="unbounded" minOccurs="0"
-                                name="GetOptimalFaresOffer" nillable="true" type="tns:GetOptimalFaresOffer"/>
+                        name="GetOptimalFaresOffer" nillable="true" type="tns:GetOptimalFaresOffer"/>
                 </xs:sequence>
             </xs:complexType>
             <xs:element name="GetOptimalFaresOutput">
