@@ -1,15 +1,59 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
-                  xmlns:tns="http://www.tais.ru/" targetNamespace="http://www.tais.ru/">
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions targetNamespace="http://www.tais.ru/"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+                  xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+                  xmlns:tns="http://www.tais.ru/"
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <wsdl:types>
+        <xs:schema elementFormDefault="qualified" targetNamespace="http://www.tais.ru/">
+            <xs:complexType name="CIBESOAPError">
+                <xs:sequence>
+                    <xs:element name="code" type="xs:string"/>
+                    <xs:element name="description" type="xs:string"/>
+                    <xs:element minOccurs="0" name="data" type="soapenc:Struct"/>
+                    <xs:element minOccurs="0" name="stack" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="CommonParameters">
+                <xs:sequence>
+                    <xs:element name="session_token" type="xs:string"/>
+                    <xs:element name="hash" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="CancelInput">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="tns:CommonParameters">
+                            <xs:sequence>
+                                <xs:element minOccurs="0"
+                                            name="order_id" type="xs:string"/>
+                                <xs:element minOccurs="0" name="rloc" type="xs:string"/>
+                            </xs:sequence>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="CancelOutput">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="error" type="tns:CIBESOAPError"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="Cancel">
+        <wsdl:part element="tns:CancelInput" name="parameter"/>
+    </wsdl:message>
+    <wsdl:message name="CancelResponse">
+        <wsdl:part element="tns:CancelOutput" name="parameter"/>
+    </wsdl:message>
     <wsdl:portType name="TAISSoapPort2">
         <wsdl:operation name="Cancel">
             <wsdl:input message="tns:Cancel"/>
             <wsdl:output message="tns:CancelResponse"/>
         </wsdl:operation>
     </wsdl:portType>
-    <wsdl:service name="TAIS">
-        <wsdl:port name="TAISSoapPort" binding="tns:TAISSoapBinding">
-            <soap:address location="http://search.biletix.ru/bitrix/components/travelshop/ibe.soap/travelshop_booking.php"/>
-        </wsdl:port>
-    </wsdl:service>
+    <wsdl:service name="TAIS"/>
 </wsdl:definitions>

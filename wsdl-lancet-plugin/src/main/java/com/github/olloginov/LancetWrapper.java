@@ -92,8 +92,16 @@ class LancetWrapper {
             @Override
             public WsdlFilterDecision needPortTypeOperation(@NotNull QName portType, @NotNull String operation) {
                 for (WsdlPortType pt : setup.getInclude().getPortTypes()) {
+                    if (!portType.toString().equals(pt.getName())) {
+                        continue;
+                    }
+
+                    if (pt.getOperations().isEmpty()) {
+                        return WsdlFilterDecision.KEEP;
+                    }
+                    
                     for (WsdlPortTypeOperation pto : pt.getOperations()) {
-                        if (pto.getName().equals(operation) && portType.toString().equals(pt.getName())) {
+                        if (pto.getName().equals(operation)) {
                             return WsdlFilterDecision.KEEP;
                         }
                     }

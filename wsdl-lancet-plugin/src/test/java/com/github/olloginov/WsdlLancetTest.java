@@ -10,7 +10,9 @@ import org.w3c.dom.ls.LSOutput;
 import org.w3c.dom.ls.LSParser;
 import org.w3c.dom.ls.LSSerializer;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
@@ -18,10 +20,6 @@ import java.util.TreeMap;
 import static org.junit.Assert.assertEquals;
 
 public class WsdlLancetTest {
-    private static <T> T[] arrayOf(T... params) {
-        return params;
-    }
-
     private void processFile(Map<String, String> ruleNamespaces, WsdlSlice wsdlSlice, String inputAsset, String expectedAsset) throws Exception {
         File target = File.createTempFile("wsdl-lancet-test", ".wsdl");
         File source = new File(WsdlLancetTest.class.getResource(inputAsset).getFile());
@@ -57,7 +55,7 @@ public class WsdlLancetTest {
     }
 
     @Test
-    public void processBiletix2() throws Exception {
+    public void processBiletix2_singlePortTypeOperation() throws Exception {
         processFile(
                 new TreeMap<String, String>() {{
                     put("tais", "http://www.tais.ru/");
@@ -68,7 +66,10 @@ public class WsdlLancetTest {
                         ))
                 )),
                 "/biletix2-source.wsdl", "/biletix2-target-00.wsdl");
+    }
 
+    @Test
+    public void processBiletix2_wholePortType() throws Exception {
         processFile(
                 new TreeMap<String, String>() {{
                     put("tais", "http://www.tais.ru/");
@@ -87,16 +88,12 @@ public class WsdlLancetTest {
                 "/smallstrings-source.wsdl", "/smallstrings-target.wsdl");
     }
 
-    private static String readFile(File file) throws IOException {
-        StringBuilder out = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
-            String line;
-            while (null != (line = reader.readLine())) {
-                out.append(line);
-                out.append("\n");
-            }
-        }
-        return out.toString();
+    @Test
+    public void needOneEbaySvc() throws Exception {
+        processFile(
+                new TreeMap<String, String>(),
+                new WsdlSlice(),
+                "/ebaySvc-source.wsdl", "/ebaySvc-target-00.wsdl");
     }
 
     private void assertContentEquals(File expected, File actual) throws IOException, InstantiationException, IllegalAccessException, ClassNotFoundException {
@@ -123,6 +120,6 @@ public class WsdlLancetTest {
         output.setCharacterStream(exceptedDomText);
         serializer.write(expectedDom, output);
 
-        assertEquals(exceptedDomText, actualDomText);
+        assertEquals(exceptedDomText.toString(), actualDomText.toString());
     }
 }

@@ -54,6 +54,8 @@ class LancetWsdl11(
             }
         }
 
+        compactMessages()
+
         val usedElements = wsdl.messages
                 .flatMap { it.parts }
                 .map { it.element }
@@ -65,6 +67,17 @@ class LancetWsdl11(
                     .forEach { deleteSchemaElement(schema, it) }
             compactSchemaTypes(schema)
         }
+    }
+
+    private fun compactMessages() {
+        val usedMessages = wsdl.portTypes
+                .flatMap { it.operations }
+                .flatMap { it.faultMessage + it.inputMessage + it.outputMessage }
+                .toSet()
+
+        wsdl.messages
+                .filterNot { usedMessages.contains(it.name) }
+                .forEach { deleteMessage(it) }
     }
 
     private fun compactSchemaTypes(schema: Schema) {
@@ -220,23 +233,13 @@ class LancetWsdl11(
                                 .filter { servicePort -> servicePort.binding == binding.name }
                                 .onEach { servicePort ->
                                     servicePort.node.remove()
-                                    service.ports.remove(servicePort) }
+                                    service.ports.remove(servicePort)
+                                }
                     }
                 }
     }
 
     private fun deletePortTypeOperation(portType: PortType, portTypeOperation: PortTypeOperation) {
-        emptyList<QName>()
-                .union(listOf(portTypeOperation.inputMessage))
-                .union(listOf(portTypeOperation.outputMessage))
-                .union(portTypeOperation.faultMessage)
-                .distinct()
-                .forEach { message ->
-                    wsdl.messages
-                            .filter { it.name == message }
-                            .forEach { deleteMessage(it) }
-                }
-
         portTypeOperation.node.remove()
         portType.operations.remove(portTypeOperation)
 
