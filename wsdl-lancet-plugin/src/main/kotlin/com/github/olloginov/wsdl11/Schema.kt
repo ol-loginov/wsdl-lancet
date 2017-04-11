@@ -31,7 +31,7 @@ internal open class NodeHolder(val node: SmartNode) : RefCountable()
 
 internal class Schema(node: SmartNode,
                       val elements: MutableList<SchemaElement>,
-                      val types: MutableList<SchemaType>,
+                      val types: MutableMap<QName, SchemaType>,
                       val referenceCount: MutableMap<QName, Int>
 ) : NodeHolder(node)
 

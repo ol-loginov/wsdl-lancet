@@ -83,8 +83,8 @@ class LancetWsdl11(
     private fun compactSchemaTypes(schema: Schema) {
         do {
             val deleted = schema.types
-                    .filter { schema.referenceCount.getOrElse(it.type, { -1000 }) <= 0 }
-                    .onEach { deleteSchemaType(schema, it) }
+                    .filterKeys { schema.referenceCount.getOrElse(it, { -1000 }) <= 0 }
+                    .onEach { deleteSchemaType(schema, it.value) }
                     .count()
         } while (deleted > 0)
     }
@@ -101,7 +101,7 @@ class LancetWsdl11(
     }
 
     private fun deleteSchemaType(schema: Schema, it: SchemaType) {
-        if (schema.types.remove(it)) {
+        if (schema.types.remove(it.type) != null) {
             it.references.forEach { name -> releaseTypeReference(schema, name) }
             it.node.remove()
         }
@@ -136,7 +136,9 @@ class LancetWsdl11(
                 SchemaType(schemaTypeNode,
                         nmtokenToQName(schemaNamespace, schemaTypeNode.getAttributeOrEmpty("name")),
                         referenceCollector(schemaTypeNode))
-            }.toMutableList()
+            }
+                    .map { it.type to it }
+                    .toMap().toMutableMap()
 
             val schemaElements = schemaNode.evaluateNodes(compile("./xs:element")).map { elementNode ->
                 SchemaElement(elementNode,
@@ -145,7 +147,7 @@ class LancetWsdl11(
             }.toMutableList()
 
             val schemaTypesReferences = schemaTypes
-                    .flatMap { it.references }
+                    .flatMap { it.value.references }
 
             val schemaElementsReferences = schemaElements
                     .flatMap { it.references }
