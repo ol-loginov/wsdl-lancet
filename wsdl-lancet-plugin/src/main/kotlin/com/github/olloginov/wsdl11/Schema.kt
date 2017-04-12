@@ -12,8 +12,6 @@ internal class Wsdl(
         val schemas: MutableList<Schema> = mutableListOf()
 )
 
-internal class NMToken {}
-
 internal open class RefCountable {
     private var refs = 0
 
@@ -31,8 +29,7 @@ internal open class NodeHolder(val node: SmartNode) : RefCountable()
 
 internal class Schema(node: SmartNode,
                       val elements: MutableList<SchemaElement>,
-                      val types: MutableMap<QName, SchemaType>,
-                      val referenceCount: MutableMap<QName, Int>
+                      val types: MutableMap<QName, SchemaType>
 ) : NodeHolder(node)
 
 internal class SchemaElement(node: SmartNode,

@@ -87,7 +87,7 @@ class LancetWrapper {
             wsdlPortType.setName(XmlUtil.fullQName(wsdlPortType.getName(), namespaceContextMap).toString());
         }
 
-        lancet.process(new WsdlFilter() {
+        lancet.compact(new WsdlFilter() {
             @NotNull
             @Override
             public WsdlFilterDecision needPortTypeOperation(@NotNull QName portType, @NotNull String operation) {
@@ -99,7 +99,7 @@ class LancetWrapper {
                     if (pt.getOperations().isEmpty()) {
                         return WsdlFilterDecision.KEEP;
                     }
-                    
+
                     for (WsdlPortTypeOperation pto : pt.getOperations()) {
                         if (pto.getName().equals(operation)) {
                             return WsdlFilterDecision.KEEP;

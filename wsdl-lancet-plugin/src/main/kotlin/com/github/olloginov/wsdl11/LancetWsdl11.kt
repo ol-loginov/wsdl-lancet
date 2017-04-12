@@ -38,7 +38,7 @@ class LancetWsdl11(
         return QName(targetNamespace, localName)
     }
 
-    override fun process(include: WsdlFilter) {
+    override fun compact(include: WsdlFilter) {
         readEmbeddedSchemas()
         readPortTypes()
         readServices()
@@ -56,17 +56,23 @@ class LancetWsdl11(
 
         compactMessages()
 
+        wsdl.schemas.forEach { compactSchemaElements(it) }
+
+        compactSchemaTypes()
+    }
+
+    private fun compactSchemaElements(schema: Schema) {
         val usedElements = wsdl.messages
                 .flatMap { it.parts }
                 .map { it.element }
                 .toSet()
 
-        wsdl.schemas.forEach { schema ->
-            schema.elements
-                    .filterNot { usedElements.contains(it.type) }
-                    .forEach { deleteSchemaElement(schema, it) }
-            compactSchemaTypes(schema)
-        }
+        schema.elements
+                .filterNot { usedElements.contains(it.type) }
+                .forEach {
+                    schema.elements.remove(it)
+                    it.node.remove()
+                }
     }
 
     private fun compactMessages() {
@@ -77,41 +83,22 @@ class LancetWsdl11(
 
         wsdl.messages
                 .filterNot { usedMessages.contains(it.name) }
-                .forEach { deleteMessage(it) }
+                .forEach { message ->
+                    message.node.remove()
+                    wsdl.messages.remove(message)
+                }
     }
 
-    private fun compactSchemaTypes(schema: Schema) {
-        do {
-            val deleted = schema.types
-                    .filterKeys { schema.referenceCount.getOrElse(it, { -1000 }) <= 0 }
-                    .onEach { deleteSchemaType(schema, it.value) }
-                    .count()
-        } while (deleted > 0)
-    }
-
-    private fun releaseTypeReference(schema: Schema, it: QName) {
-        val count = schema.referenceCount[it]
-        if (count != null) {
-            if (count == 1) {
-                schema.referenceCount.remove(it)
-            } else {
-                schema.referenceCount.put(it, count - 1)
-            }
+    private fun compactSchemaTypes() {
+        class DependsOn {
         }
-    }
 
-    private fun deleteSchemaType(schema: Schema, it: SchemaType) {
-        if (schema.types.remove(it.type) != null) {
-            it.references.forEach { name -> releaseTypeReference(schema, name) }
-            it.node.remove()
-        }
-    }
-
-    private fun deleteSchemaElement(schema: Schema, it: SchemaElement) {
-        if (schema.elements.remove(it)) {
-            it.references.forEach { name -> releaseTypeReference(schema, name) }
-            it.node.remove()
-        }
+        val typeGraph: Map<QName, DependsOn> = mutableMapOf()
+        wsdl.schemas
+                .flatMap { it.types.values }
+                .forEach {
+                    typeGraph.get(it.type) ?: DependsOn()
+                }
     }
 
     private fun readEmbeddedSchemas() {
@@ -146,21 +133,9 @@ class LancetWsdl11(
                         referenceCollector(elementNode))
             }.toMutableList()
 
-            val schemaTypesReferences = schemaTypes
-                    .flatMap { it.value.references }
-
-            val schemaElementsReferences = schemaElements
-                    .flatMap { it.references }
-
-            val totalTypeReferences = (schemaTypesReferences + schemaElementsReferences)
-                    .groupingBy { it }
-                    .eachCount()
-                    .toMutableMap()
-
             wsdl.schemas.add(Schema(schemaNode,
                     schemaElements,
-                    schemaTypes,
-                    totalTypeReferences))
+                    schemaTypes))
         }
     }
 
@@ -253,10 +228,5 @@ class LancetWsdl11(
                         bindingOperation.node.remove()
                     }
                 }
-    }
-
-    private fun deleteMessage(message: Message) {
-        wsdl.messages.remove(message)
-        message.node.remove()
     }
 }
